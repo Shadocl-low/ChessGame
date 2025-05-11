@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace ChessGameApplication
 {
-    /// <summary>
-    /// Interaction logic for MainMenuWindow.xaml
-    /// </summary>
     public partial class MainMenuWindow : Window
     {
         public MainMenuWindow()
@@ -31,9 +28,14 @@ namespace ChessGameApplication
             this.Close();
         }
 
-        private void LoadLatestGame_Click(object sender, RoutedEventArgs e)
+        private void ContinueGame_Click(object sender, RoutedEventArgs e)
         {
             
+        }
+
+        private void Settings_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)

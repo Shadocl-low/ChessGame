@@ -5,15 +5,52 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChessGameApplication"
         mc:Ignorable="d"
-        Title="Меню гри Шахи" Height="350" Width="400"
+        Title="Шахи"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize">
-    <Grid Background="#f0f0f0">
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" >
-            <TextBlock Text="Шахи" FontSize="32" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,20"/>
-            <Button Content="Нова гра" Height="40" Margin="0,0,0,10" Click="NewGame_Click"/>
-            <Button Content="Продовжити гру" Height="40" Margin="0,0,0,10" Click="LoadLatestGame_Click"/>
-            <Button Content="Вихід" Height="40" Click="Exit_Click"/>
+        Width="1280" Height="720"
+        Background="#1e1e2f"
+        ResizeMode="CanResizeWithGrip">
+    <Grid>
+        <!-- Фоновий шар -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#1e1e2f" Offset="0"/>
+                <GradientStop Color="#2d2d44" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <!-- Центрований стек кнопок -->
+        <StackPanel VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Width="300"
+                    Margin="0,20">
+
+            <TextBlock Text="♔ Шахи ♚"
+                       FontSize="48"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,40"/>
+
+            <Button Content="Нова гра"
+                    Style="{StaticResource MenuButtonStyle}"
+                    Click="NewGame_Click"
+                    Margin="0,0,0,15"/>
+
+            <Button Content="Продовжити гру"
+                    Style="{StaticResource MenuButtonStyle}"
+                    Click="ContinueGame_Click"
+                    Margin="0,0,0,15"/>
+
+            <Button Content="Налаштування"
+                    Style="{StaticResource MenuButtonStyle}"
+                    Click="Settings_Click"
+                    Margin="0,0,0,15"/>
+
+            <Button Content="Вихід"
+                    Style="{StaticResource MenuButtonStyle}"
+                    Click="Exit_Click"
+                    Margin="0,0,0,15"/>
         </StackPanel>
     </Grid>
 </Window>
