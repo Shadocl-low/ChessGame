@@ -5,8 +5,48 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChessGameApplication"
         mc:Ignorable="d"
-        Title="GameWindow" Height="450" Width="800">
-    <Grid>
+        Title="Гра — Шахи"
+        Width="1280" Height="800"
+        WindowStartupLocation="CenterScreen"
+        Background="#1e1e2f"
+        ResizeMode="CanResizeWithGrip">
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
+        <!-- Шахова дошка -->
+        <UniformGrid Name="ChessBoard"
+                     Rows="8" Columns="8"
+                     Width="640" Height="640"
+                     Margin="20"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Center">
+            <!-- Клітинки створюються у code-behind -->
+        </UniformGrid>
+
+        <!-- Панель керування справа -->
+        <StackPanel Grid.Column="1"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Width="300">
+
+            <TextBlock Text="Хід: Білий"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       Margin="0,0,0,30"
+                       HorizontalAlignment="Center"/>
+
+            <Button Content="Зберегти гру"
+                    Style="{StaticResource MenuButtonStyle}"
+                    Margin="0,0,0,20"
+                    Click="SaveGame_Click"/>
+
+            <Button Content="Вийти в меню"
+                    Style="{StaticResource MenuButtonStyle}"
+                    Click="BackToMenu_Click"/>
+        </StackPanel>
     </Grid>
 </Window>
