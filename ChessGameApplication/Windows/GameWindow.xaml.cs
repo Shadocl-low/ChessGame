@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ChessGameApplication
+namespace ChessGameApplication.Windows
 {
     /// <summary>
     /// Interaction logic for GameWindow.xaml

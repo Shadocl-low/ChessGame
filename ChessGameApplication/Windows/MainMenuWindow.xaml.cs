@@ -14,7 +14,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ChessGameApplication
+namespace ChessGameApplication.Windows
 {
     public partial class MainMenuWindow : Window
     {

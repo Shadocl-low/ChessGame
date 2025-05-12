@@ -13,12 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ChessGameApplication
+namespace ChessGameApplication.Windows
 {
     public partial class SettingsWindow : Window
     {
-        private bool isDarkTheme = true;
-
         public SettingsWindow()
         {
             InitializeComponent();
