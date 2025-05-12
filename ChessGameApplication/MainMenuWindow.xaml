@@ -8,18 +8,10 @@
         Title="Шахи"
         WindowStartupLocation="CenterScreen"
         Width="1280" Height="720"
-        Background="#1e1e2f"
+        Background="{DynamicResource WindowBackgroundBrush}"
         ResizeMode="CanResizeWithGrip">
-    <Grid>
-        <!-- Фоновий шар -->
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#1e1e2f" Offset="0"/>
-                <GradientStop Color="#2d2d44" Offset="1"/>
-            </LinearGradientBrush>
-        </Grid.Background>
+    <Grid Background="{StaticResource GridBackgroundBrush}">
 
-        <!-- Центрований стек кнопок -->
         <StackPanel VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     Width="300"
@@ -28,27 +20,27 @@
             <TextBlock Text="♔ Шахи ♚"
                        FontSize="48"
                        FontWeight="Bold"
-                       Foreground="White"
                        HorizontalAlignment="Center"
-                       Margin="0,0,0,40"/>
+                       Margin="0,0,0,40"
+                       Style="{DynamicResource TextBlockStyle}"/>
 
             <Button Content="Нова гра"
-                    Style="{StaticResource MenuButtonStyle}"
+                    Style="{StaticResource ButtonStyle}"
                     Click="NewGame_Click"
                     Margin="0,0,0,15"/>
 
             <Button Content="Продовжити гру"
-                    Style="{StaticResource MenuButtonStyle}"
+                    Style="{StaticResource ButtonStyle}"
                     Click="ContinueGame_Click"
                     Margin="0,0,0,15"/>
 
             <Button Content="Налаштування"
-                    Style="{StaticResource MenuButtonStyle}"
+                    Style="{StaticResource ButtonStyle}"
                     Click="Settings_Click"
                     Margin="0,0,0,15"/>
 
             <Button Content="Вихід"
-                    Style="{StaticResource MenuButtonStyle}"
+                    Style="{StaticResource ButtonStyle}"
                     Click="Exit_Click"
                     Margin="0,0,0,15"/>
         </StackPanel>

@@ -6,29 +6,81 @@
         xmlns:local="clr-namespace:ChessGameApplication"
         mc:Ignorable="d"
         Title="Налаштування"
-        Width="600" Height="400"
         WindowStartupLocation="CenterScreen"
+        Width="1280" Height="720"
         Background="{DynamicResource WindowBackgroundBrush}"
         ResizeMode="NoResize">
+
     <Grid Margin="30">
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Spacing="20">
-            <TextBlock Text="Налаштування" 
-                       FontSize="28" 
-                       FontWeight="Bold"
-                       Foreground="{DynamicResource ForegroundBrush}"
-                       HorizontalAlignment="Center"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-            <Button Content="Перемкнути тему" 
-                    Style="{StaticResource MenuButtonStyle}"
-                    Click="ToggleTheme_Click"/>
+        <TextBlock Text="Налаштування"
+                   Grid.Row="0"
+                   FontSize="42"
+                   FontWeight="Bold"
+                   Foreground="{DynamicResource ForegroundBrush}"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,20"/>
 
-            <Button Content="Перемкнути режим вікна" 
-                    Style="{StaticResource MenuButtonStyle}"
-                    Click="ToggleWindowMode_Click"/>
+        <Border BorderThickness="2"
+                BorderBrush="Gray"
+                CornerRadius="10"
+                Padding="10"
+                Margin="20" Grid.Row="1">
+            <Grid Grid.Row="1" Margin="50,10,50,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="85"/>
+                    <RowDefinition Height="85"/>
+                    <RowDefinition Height="85"/>
+                    <RowDefinition Height="85"/>
+                    <RowDefinition Height="85"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <Button Content="Повернутися до меню"
-                    Style="{StaticResource MenuButtonStyle}"
+                <TextBlock Text="Тема:" 
+                           Grid.Row="0" Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockStyle}" 
+                           HorizontalAlignment="Left"/>
+
+                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <RadioButton Content="Світла" GroupName="ThemeGroup" Tag="Light"
+                                 Checked="ThemeRadioButton_Checked"
+                                 Style="{DynamicResource RadioButtonStyle}"/>
+                    <RadioButton Content="Темна" GroupName="ThemeGroup" Tag="Dark"
+                                 IsChecked="True"
+                                 Checked="ThemeRadioButton_Checked"
+                                 Style="{DynamicResource RadioButtonStyle}"/>
+                </StackPanel>
+
+                <TextBlock Text="Режим вікна:"
+                           Grid.Row="1" Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockStyle}" 
+                           HorizontalAlignment="Left"/>
+
+                <ComboBox Grid.Row="1" Grid.Column="1"
+                          Name="WindowModeComboBox"
+                          SelectionChanged="WindowModeComboBox_SelectionChanged" HorizontalAlignment="Right" VerticalAlignment="Center"
+                          Style="{DynamicResource ComboBoxStyle}">
+                    <ComboBoxItem Content="Віконний" IsSelected="True"/>
+                    <ComboBoxItem Content="На весь екран"/>
+                </ComboBox>
+            </Grid>
+        </Border>
+
+        <Button Content="Повернутися"
+                    Grid.Row="2"
+                    Style="{DynamicResource ButtonStyle}"
+                    Width="200"
+                    HorizontalAlignment="Right"
                     Click="BackToMenu_Click"/>
-        </StackPanel>
     </Grid>
 </Window>

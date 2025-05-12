@@ -24,8 +24,8 @@ namespace ChessGameApplication
         }
         private void NewGame_Click(object sender, RoutedEventArgs e)
         {
-            var gameWindow = new GameWindow();
-            gameWindow.Show();
+            var game = new GameWindow();
+            game.Show();
             this.Hide();
             this.Close();
         }
@@ -37,7 +37,10 @@ namespace ChessGameApplication
 
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
-
+            var setting = new SettingsWindow();
+            setting.Show();
+            this.Hide();
+            this.Close();
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
