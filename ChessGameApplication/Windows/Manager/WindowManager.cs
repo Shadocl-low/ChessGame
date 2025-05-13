@@ -21,20 +21,20 @@ namespace ChessGameApplication.Windows.Manager
             mainMenuWindow = new MainMenuWindow(this);
             settingsWindow = new SettingsWindow(this);
         }
-        public void Notify(Window sender, string action)
+        public void Notify(Window sender, WindowActions action)
         {
             switch (action)
             {
-                case "OpenMainMenu":
+                case WindowActions.OpenMainMenu:
                     SwitchWindow(mainMenuWindow);
                     break;
-                case "OpenGame":
+                case WindowActions.OpenGame:
                     SwitchWindow(gameWindow);
                     break;
-                case "OpenSettings":
+                case WindowActions.OpenSettings:
                     SwitchWindow(settingsWindow);
                     break;
-                case "Exit":
+                case WindowActions.Exit:
                     Application.Current.Shutdown();
                     break;
                 default:
