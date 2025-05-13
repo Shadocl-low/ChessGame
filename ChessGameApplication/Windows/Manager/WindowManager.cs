@@ -21,7 +21,7 @@ namespace ChessGameApplication.Windows.Manager
             mainMenuWindow = new MainMenuWindow(this);
             settingsWindow = new SettingsWindow(this);
         }
-        public void Notify(Window sender, WindowActions action)
+        public void Notify(WindowActions action)
         {
             switch (action)
             {

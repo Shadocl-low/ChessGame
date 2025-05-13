@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using ChessGameApplication.Windows.Manager;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,8 +20,11 @@ namespace ChessGameApplication.Windows
         private readonly SolidColorBrush lightCell = new SolidColorBrush(Color.FromRgb(240, 217, 181));
         private readonly SolidColorBrush darkCell = new SolidColorBrush(Color.FromRgb(181, 136, 99));
 
-        public GameWindow()
+        private readonly IWindowManager Manager;
+        public GameWindow(IWindowManager manager)
         {
+            Manager = manager;
+
             InitializeComponent();
             CreateChessBoard();
         }
@@ -47,10 +51,7 @@ namespace ChessGameApplication.Windows
         private void SaveGame_Click(object sender, RoutedEventArgs e) { }
         private void BackToMenu_Click(object sender, RoutedEventArgs e) 
         {
-            var menuWindow = new MainMenuWindow();
-            menuWindow.Show();
-            this.Hide();
-            this.Close();
+            Manager.Notify(this, WindowActions.OpenMainMenu);
         }
     }
 }
