@@ -13,8 +13,8 @@ namespace ChessGameApplication.Game.Figures
         public override List<Position> GetAvailableMoves(Board board)
         {
             return board.GetMovesInDirections(Position, Color, [
-            (1, 1), (1, -1), (-1, 1), (-1, -1)
-        ]);
+                (1, 1), (1, -1), (-1, 1), (-1, -1)
+            ]);
         }
     }
 }

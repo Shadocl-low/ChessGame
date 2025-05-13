@@ -12,39 +12,9 @@ namespace ChessGameApplication.Game.Figures
 
         public override IEnumerable<Position> GetAvailableMoves(Board board)
         {
-            var moves = new List<Position>();
-
-            int[] directions = { -1, 1 };
-            foreach (int d in directions)
-            {
-                for (int i = Position.Row + d; i >= 0 && i < 8; i += d)
-                {
-                    var pos = Position.Add(i, 0);
-                    if (board.IsEmpty(pos))
-                        moves.Add(pos);
-                    else
-                    {
-                        if (board.IsEnemyPiece(pos, Color))
-                            moves.Add(pos);
-                        break;
-                    }
-                }
-
-                for (int j = Position.Column + d; j >= 0 && j < 8; j += d)
-                {
-                    var pos = Position.Add(0, j);
-                    if (board.IsEmpty(pos))
-                        moves.Add(pos);
-                    else
-                    {
-                        if (board.IsEnemyPiece(pos, Color))
-                            moves.Add(pos);
-                        break;
-                    }
-                }
-            }
-
-            return moves;
+            return board.GetMovesInDirections(Position, Color, [
+                (1, 0), (-1, 0), (0, 1), (0, -1)
+            ]);
         }
     }
 }
