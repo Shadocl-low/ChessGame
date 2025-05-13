@@ -17,5 +17,6 @@ namespace ChessGameApplication.Game.Figures
             Color = color;
             Position = position;
         }
+        public abstract IEnumerable<Position> GetAvailableMoves(Board board);
     }
 }
