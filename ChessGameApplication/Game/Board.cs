@@ -43,5 +43,30 @@ namespace ChessGameApplication.Game
         }
         public bool IsInsideBoard(Position pos)
             => pos.Row >= 0 && pos.Row < 8 && pos.Column >= 0 && pos.Column < 8;
+        public List<Position> GetMovesInDirections(Position start, PieceColor color, (int dx, int dy)[] directions)
+        {
+            var moves = new List<Position>();
+
+            foreach (var (dx, dy) in directions)
+            {
+                var pos = start.Add(dx, dy);
+                while (IsInsideBoard(pos))
+                {
+                    if (IsEmpty(pos))
+                    {
+                        moves.Add(pos);
+                    }
+                    else
+                    {
+                        if (IsEnemyPiece(pos, color))
+                            moves.Add(pos);
+                        break;
+                    }
+                    pos = pos.Add(dx, dy);
+                }
+            }
+
+            return moves;
+        }
     }
 }
