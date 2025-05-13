@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Diagnostics;
 
 namespace ChessGameApplication.Windows
 {
@@ -33,9 +34,9 @@ namespace ChessGameApplication.Windows
         private void CreateChessBoard()
         {
             ChessBoard.Children.Clear();
-            for (int row = 0; row < 8; row++)
+            for (int col = 0; col < 8; col++)
             {
-                for (int col = 0; col < 8; col++)
+                for (int row = 0; row < 8; row++)
                 {
                     Border cell = new Border
                     {
