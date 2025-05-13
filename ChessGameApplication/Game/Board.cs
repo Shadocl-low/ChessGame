@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace ChessGameApplication.Game
 {
@@ -67,6 +68,10 @@ namespace ChessGameApplication.Game
             }
 
             return moves;
+        }
+        public bool IsKingCaptured(PieceColor color)
+        {
+            return !Squares.Cast<Piece?>().Any(p => p is King k && k.Color == color);
         }
     }
 }
