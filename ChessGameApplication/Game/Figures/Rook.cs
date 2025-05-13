@@ -19,13 +19,12 @@ namespace ChessGameApplication.Game.Figures
             {
                 for (int i = Position.Row + d; i >= 0 && i < 8; i += d)
                 {
-                    var pos = new Position(i, Position.Column);
-                    var piece = board.GetPieceAt(pos);
-                    if (piece == null)
+                    var pos = Position.Add(i, 0);
+                    if (board.IsEmpty(pos))
                         moves.Add(pos);
                     else
                     {
-                        if (piece.Color != this.Color)
+                        if (board.IsEnemyPiece(pos, Color))
                             moves.Add(pos);
                         break;
                     }
@@ -33,13 +32,12 @@ namespace ChessGameApplication.Game.Figures
 
                 for (int j = Position.Column + d; j >= 0 && j < 8; j += d)
                 {
-                    var pos = new Position(Position.Row, j);
-                    var piece = board.GetPieceAt(pos);
-                    if (piece == null)
+                    var pos = Position.Add(0, j);
+                    if (board.IsEmpty(pos))
                         moves.Add(pos);
                     else
                     {
-                        if (piece.Color != this.Color)
+                        if (board.IsEnemyPiece(pos, Color))
                             moves.Add(pos);
                         break;
                     }
