@@ -14,15 +14,14 @@ namespace ChessGameApplication.Game.Figures
         {
             var moves = new List<Position>();
 
-            int[][] offsets = 
-            {
-                [2, 1], [2, -1], [-2, 1], [-2, -1],
-                [1, 2], [1, -2], [-1, 2], [-1, -2]
+            var directions = new[] {
+                (2, 1), (2, -1), (-2, 1), (-2, -1),
+                (1, 2), (1, -2), (-1, 2), (-1, -2)
             };
 
-            foreach (var offset in offsets)
+            foreach (var (dx, dy) in directions)
             {
-                var pos = Position.Add(offset[0], offset[1]);
+                var pos = Position.Add(dx, dy);
                 if (board.IsInsideBoard(pos) && (board.IsEnemyPiece(pos, Color) || board.IsEmpty(pos)))
                     moves.Add(pos);
             }
