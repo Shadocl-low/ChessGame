@@ -26,7 +26,7 @@ namespace ChessGameApplication.Windows
 
             InitializeComponent();
 
-            SetRadioThemeCheck();
+            ApplyTheme();
         }
 
         private void ThemeRadioButton_Checked(object sender, RoutedEventArgs e)
@@ -34,68 +34,49 @@ namespace ChessGameApplication.Windows
             if (sender is not RadioButton radio || radio.Tag == null) return;
 
             string themeTag = radio.Tag.ToString()!;
-            
+
             SettingsManager.SetTheme(themeTag);
 
             ApplyTheme();
         }
         private void ApplyTheme()
         {
-            var newThemeDict = GetThemeResourceDictionary();
-            
+            var themeActions = new Dictionary<string, Action>
+            {
+                ["Dark"] = () =>
+                {
+                    DarkRadio.IsChecked = true;
+                    ApplyThemeResource("Styles/Themes/DarkTheme.xaml");
+                },
+                ["Light"] = () =>
+                {
+                    LightRadio.IsChecked = true;
+                    ApplyThemeResource("Styles/Themes/LightTheme.xaml");
+                }
+            };
+
+            if (themeActions.TryGetValue(Settings.Theme, out var apply))
+            {
+                apply();
+            }
+            else
+            {
+                throw new ArgumentException("Wrong theme selection");
+            }
+        }
+
+        private void ApplyThemeResource(string path)
+        {
+            var dict = new ResourceDictionary
+            {
+                Source = new Uri(path, UriKind.Relative)
+            };
+
             var oldThemeDict = Application.Current.Resources.MergedDictionaries
                 .FirstOrDefault(d => d.Source != null && d.Source.OriginalString.StartsWith("Styles/Themes/"));
 
-            if (oldThemeDict != null)
-                Application.Current.Resources.MergedDictionaries.Remove(oldThemeDict);
-
-            Application.Current.Resources.MergedDictionaries.Add(newThemeDict);
-        }
-        private ResourceDictionary GetThemeResourceDictionary()
-        {
-            var resource = new ResourceDictionary();
-            Uri uri;
-
-            switch (Settings.Theme)
-            {
-                case "Dark":
-                    {
-                        uri = new Uri("Styles/Themes/DarkTheme.xaml", UriKind.Relative);
-                        break;
-                    }
-                case "Light":
-                    {
-                        uri = new Uri("Styles/Themes/LightTheme.xaml", UriKind.Relative);
-                        break;
-                    }
-                default:
-                    {
-                        throw new ArgumentException("Wrong theme selection");
-                    }
-            }
-
-            resource.Source = uri;
-            return resource;
-        }
-        private void SetRadioThemeCheck()
-        {
-            switch (Settings.Theme)
-            {
-                case "Dark":
-                    {
-                        DarkRadio.IsChecked = true;
-                        break;
-                    }
-                case "Light":
-                    {
-                        LightRadio.IsChecked = true;
-                        break;
-                    }
-                default:
-                    {
-                        throw new ArgumentException("Wrong theme selection");
-                    }
-            }
+            Application.Current.Resources.MergedDictionaries.Remove(oldThemeDict);
+            Application.Current.Resources.MergedDictionaries.Add(dict);
         }
         private void WindowModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
