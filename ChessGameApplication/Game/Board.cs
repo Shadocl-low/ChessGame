@@ -5,13 +5,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Documents;
 
 namespace ChessGameApplication.Game
 {
     public class Board
     {
         private readonly Piece?[,] Squares = new Piece?[8, 8];
+        public void Initialize()
+        {
+            var startingPieces = new (Type pieceType, int x, int y)[]
+            {
+                (typeof(Rook), 0, 0), (typeof(Knight), 1, 0), (typeof(Bishop), 2, 0),
+                (typeof(Queen), 3, 0), (typeof(King), 4, 0),
+                (typeof(Bishop), 5, 0), (typeof(Knight), 6, 0), (typeof(Rook), 7, 0)
+            };
 
+            foreach (var (type, x, y) in startingPieces)
+                PlacePiece((Piece)Activator.CreateInstance(type, PieceColor.Black, new Position(x, y))!, new Position(x, y));
+
+            foreach (var (type, x, y) in startingPieces)
+                PlacePiece((Piece)Activator.CreateInstance(type, PieceColor.White, new Position(x, 7))!, new Position(x, 7));
+
+            for (int x = 0; x < 8; x++)
+            {
+                PlacePiece(new Pawn(PieceColor.Black, new Position(x, 1)), new Position(x, 1));
+                PlacePiece(new Pawn(PieceColor.White, new Position(x, 6)), new Position(x, 6));
+            }
+        }
         public void PlacePiece(Piece piece, Position position)
         {
             Squares[position.Row, position.Column] = piece;
