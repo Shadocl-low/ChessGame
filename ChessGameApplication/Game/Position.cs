@@ -16,7 +16,10 @@ namespace ChessGameApplication.Game
             Row = row;
             Column = column;
         }
-
+        public Position Add(int rowOffset, int columnOffset)
+        {
+            return new Position(Row + rowOffset, Column + columnOffset);
+        }
         public override string ToString() => $"({Row}, {Column})";
     }
 }

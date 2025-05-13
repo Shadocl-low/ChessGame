@@ -31,7 +31,16 @@ namespace ChessGameApplication.Game
             Squares[from.Row, from.Column] = null;
             piece.Position = to;
         }
-
+        public bool IsEmpty(Position pos)
+        {
+            var piece = GetPieceAt(pos);
+            return piece == null;
+        }
+        public bool IsEnemyPiece(Position pos, PieceColor color)
+        {
+            var piece = GetPieceAt(pos);
+            return piece != null && piece.Color != color;
+        }
         public bool IsInsideBoard(Position pos)
             => pos.Row >= 0 && pos.Row < 8 && pos.Column >= 0 && pos.Column < 8;
     }
