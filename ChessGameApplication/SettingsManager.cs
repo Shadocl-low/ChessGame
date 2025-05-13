@@ -1,0 +1,54 @@
+﻿using ChessGameApplication.JsonModels;
+using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+
+namespace ChessGameApplication
+{
+    public class SettingsManager
+    {
+        private static readonly string SettingsFilePath = "appsettings.json";
+
+        public AppSettings? Settings { get; private set; }
+        private readonly JsonSerializerOptions jsonSerializerOptions = new() { WriteIndented = true };
+
+        private static SettingsManager? _instance;
+        public static SettingsManager Instance => _instance ??= new SettingsManager();
+
+        private SettingsManager() => Load();
+
+        public void Load()
+        {
+            if (File.Exists(SettingsFilePath))
+            {
+                var json = File.ReadAllText(SettingsFilePath);
+                Settings = JsonSerializer.Deserialize<AppSettings>(json) ?? new AppSettings();
+            }
+            else
+            {
+                Settings = new AppSettings();
+            }
+        }
+
+        public void Save()
+        {
+            var json = JsonSerializer.Serialize(Settings, jsonSerializerOptions);
+            File.WriteAllText(SettingsFilePath, json);
+        }
+        public static void SetTheme(string theme)
+        {
+            Instance.Settings!.Theme = theme;
+            Instance.Save();
+        }
+        public static void SetWindowMode(string windowMode)
+        {
+            Instance.Settings!.WindowMode = windowMode;
+            Instance.Save();
+        }
+    }
+}

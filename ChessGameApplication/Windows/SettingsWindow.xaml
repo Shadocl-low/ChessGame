@@ -51,11 +51,10 @@
                            HorizontalAlignment="Left"/>
 
                 <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                    <RadioButton Content="Світла" GroupName="ThemeGroup" Tag="Light"
+                    <RadioButton Content="Світла" Name="LightRadio" GroupName="ThemeGroup" Tag="Light"
                                  Checked="ThemeRadioButton_Checked"
                                  Style="{DynamicResource RadioButtonStyle}"/>
-                    <RadioButton Content="Темна" GroupName="ThemeGroup" Tag="Dark"
-                                 IsChecked="True"
+                    <RadioButton Content="Темна" Name="DarkRadio" GroupName="ThemeGroup" Tag="Dark"
                                  Checked="ThemeRadioButton_Checked"
                                  Style="{DynamicResource RadioButtonStyle}"/>
                 </StackPanel>
