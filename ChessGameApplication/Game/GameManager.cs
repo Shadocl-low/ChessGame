@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChessGameApplication.Game.Figures;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace ChessGameApplication.Game
 {
-    public class Game
+    public class GameManager
     {
         public Board Board { get; private set; }
         public PieceColor CurrentTurn { get; private set; } = PieceColor.White;
         public bool IsGameOver { get; private set; }
 
-        public Game()
+        public GameManager()
         {
             Board = new Board();
             StartNewGame();
@@ -58,6 +59,10 @@ namespace ChessGameApplication.Game
             {
                 CurrentTurn = PieceColor.White;
             }
+        }
+        public Piece? GetPiece(Position position)
+        {
+            return Board.GetPieceAt(position);
         }
     }
 }
