@@ -10,7 +10,7 @@
         Width="1280" Height="720"
         Background="{DynamicResource WindowBackgroundBrush}"
         ResizeMode="CanResizeWithGrip">
-    <Grid Background="{StaticResource GridBackgroundBrush}">
+    <Grid Background="{DynamicResource GridBackgroundBrush}">
 
         <StackPanel VerticalAlignment="Center"
                     HorizontalAlignment="Center"
@@ -25,22 +25,22 @@
                        Style="{DynamicResource TextBlockStyle}"/>
 
             <Button Content="Нова гра"
-                    Style="{StaticResource ButtonStyle}"
+                    Style="{DynamicResource ButtonStyle}"
                     Click="NewGame_Click"
                     Margin="0,0,0,15"/>
 
             <Button Content="Продовжити гру"
-                    Style="{StaticResource ButtonStyle}"
+                    Style="{DynamicResource ButtonStyle}"
                     Click="ContinueGame_Click"
                     Margin="0,0,0,15"/>
 
             <Button Content="Налаштування"
-                    Style="{StaticResource ButtonStyle}"
+                    Style="{DynamicResource ButtonStyle}"
                     Click="Settings_Click"
                     Margin="0,0,0,15"/>
 
             <Button Content="Вихід"
-                    Style="{StaticResource ButtonStyle}"
+                    Style="{DynamicResource ButtonStyle}"
                     Click="Exit_Click"
                     Margin="0,0,0,15"/>
         </StackPanel>

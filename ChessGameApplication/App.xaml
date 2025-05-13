@@ -1,8 +1,7 @@
 ﻿<Application x:Class="ChessGameApplication.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:ChessGameApplication"
-             StartupUri="Windows/MainMenuWindow.xaml">
+             xmlns:local="clr-namespace:ChessGameApplication">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

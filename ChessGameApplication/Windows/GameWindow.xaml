@@ -30,19 +30,18 @@
                     Width="300">
 
             <TextBlock Text="Хід: Білий"
-                       FontSize="24"
                        FontWeight="Bold"
-                       Foreground="White"
                        Margin="0,0,0,30"
-                       HorizontalAlignment="Center"/>
+                       HorizontalAlignment="Center"
+                       Style="{DynamicResource TextBlockStyle}"/>
 
             <Button Content="Зберегти гру"
-                    Style="{StaticResource ButtonStyle}"
+                    Style="{DynamicResource ButtonStyle}"
                     Margin="0,0,0,20"
                     Click="SaveGame_Click"/>
 
             <Button Content="Вийти в меню"
-                    Style="{StaticResource ButtonStyle}"
+                    Style="{DynamicResource ButtonStyle}"
                     Click="BackToMenu_Click"/>
         </StackPanel>
     </Grid>

@@ -1,4 +1,5 @@
 ﻿using ChessGameApplication.JsonModels;
+using ChessGameApplication.Windows.Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +21,10 @@ namespace ChessGameApplication.Windows
     public partial class SettingsWindow : Window
     {
         private AppSettings Settings;
-        public SettingsWindow()
+        private readonly IWindowManager Manager;
+        public SettingsWindow(IWindowManager manager)
         {
+            Manager = manager;
             Settings = SettingsManager.Instance.Settings!;
 
             InitializeComponent();
@@ -85,10 +88,7 @@ namespace ChessGameApplication.Windows
 
         private void BackToMenu_Click(object sender, RoutedEventArgs e)
         {
-            var menu = new MainMenuWindow();
-            menu.Show();
-
-            this.Close();
+            Manager.Notify(WindowActions.OpenMainMenu);
         }
     }
 }

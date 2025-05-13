@@ -9,6 +9,6 @@ namespace ChessGameApplication.Windows.Manager
 {
     public interface IWindowManager
     {
-        void Notify(Window sender, WindowActions action);
+        void Notify(WindowActions action);
     }
 }

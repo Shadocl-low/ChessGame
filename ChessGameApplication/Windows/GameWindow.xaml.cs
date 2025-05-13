@@ -12,9 +12,6 @@ using System.Windows.Shapes;
 
 namespace ChessGameApplication.Windows
 {
-    /// <summary>
-    /// Interaction logic for GameWindow.xaml
-    /// </summary>
     public partial class GameWindow : Window
     {
         private readonly SolidColorBrush lightCell = new SolidColorBrush(Color.FromRgb(240, 217, 181));
@@ -51,7 +48,7 @@ namespace ChessGameApplication.Windows
         private void SaveGame_Click(object sender, RoutedEventArgs e) { }
         private void BackToMenu_Click(object sender, RoutedEventArgs e) 
         {
-            Manager.Notify(this, WindowActions.OpenMainMenu);
+            Manager.Notify(WindowActions.OpenMainMenu);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using ChessGameApplication.Windows.Manager;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,16 +19,16 @@ namespace ChessGameApplication.Windows
 {
     public partial class MainMenuWindow : Window
     {
-        public MainMenuWindow()
+        private readonly IWindowManager Manager;
+        public MainMenuWindow(IWindowManager manager)
         {
+            Manager = manager;
+
             InitializeComponent();
         }
         private void NewGame_Click(object sender, RoutedEventArgs e)
         {
-            var game = new GameWindow();
-            game.Show();
-            this.Hide();
-            this.Close();
+            Manager.Notify(WindowActions.OpenGame);
         }
 
         private void ContinueGame_Click(object sender, RoutedEventArgs e)
@@ -37,15 +38,12 @@ namespace ChessGameApplication.Windows
 
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
-            var setting = new SettingsWindow();
-            setting.Show();
-            this.Hide();
-            this.Close();
+            Manager.Notify(WindowActions.OpenSettings);
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            Manager.Notify(WindowActions.Exit);
         }
     }
 }
