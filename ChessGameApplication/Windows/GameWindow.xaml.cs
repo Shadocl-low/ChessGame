@@ -13,6 +13,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Reflection;
+using ChessGameApplication.Commands;
+using System.Xml.Linq;
 
 namespace ChessGameApplication.Windows
 {
@@ -20,8 +22,9 @@ namespace ChessGameApplication.Windows
     {
         private readonly SolidColorBrush lightCell = new SolidColorBrush(Color.FromRgb(240, 217, 181));
         private readonly SolidColorBrush darkCell = new SolidColorBrush(Color.FromRgb(181, 136, 99));
-        private List<Position> allowedMoves = new();
+        private Position? _selectedPosition;
         private Dictionary<Position, Border> positionToCellMap = new();
+        private List<Position> allowedMoves = new();
 
         private readonly IWindowManager Manager;
         private readonly GameManager Game;
@@ -37,41 +40,89 @@ namespace ChessGameApplication.Windows
         private void CreateChessBoard()
         {
             ChessBoard.Children.Clear();
+            positionToCellMap.Clear();
+
             for (int col = 0; col < 8; col++)
             {
                 for (int row = 0; row < 8; row++)
                 {
+                    var pos = new Position(row, col);
                     Border cell = new Border
                     {
                         Background = (row + col) % 2 == 0 ? lightCell : darkCell,
                         BorderThickness = new Thickness(0.5),
                         BorderBrush = Brushes.Black,
                         AllowDrop = true,
-                        Tag = (row, col),
+                        Tag = pos,
                     };
-                    cell.Drop += OnCellDrop;
+                    cell.PreviewMouseLeftButtonDown += OnCellClick;
 
-                    Piece? piece = Game.GetPiece(new Position(row, col));
+                    Piece? piece = Game.GetPiece(pos);
                     if (piece != null)
                     {
                         var text = new TextBlock
                         {
                             Text = GetPieceSymbol(piece),
                             FontSize = 32,
-                            Tag = (row, col),
                             HorizontalAlignment = HorizontalAlignment.Center,
-                            VerticalAlignment = VerticalAlignment.Center
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Tag = pos
                         };
-                        text.PreviewMouseDown += OnPieceMouseDown;
+                        text.PreviewMouseLeftButtonDown += OnPieceMouseDown;
                         cell.Child = text;
                     }
 
                     ChessBoard.Children.Add(cell);
-                    positionToCellMap[new Position(row, col)] = cell;
+                    positionToCellMap[pos] = cell;
                 }
             }
         }
+        private void OnPieceMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is TextBlock textBlock && textBlock.Tag is Position piecePos)
+            {
+                if (textBlock.Parent is Border cell)
+                {
+                    var args = new MouseButtonEventArgs(
+                        e.MouseDevice,
+                        e.Timestamp,
+                        e.ChangedButton,
+                        e.StylusDevice
+                    );
+                    args.RoutedEvent = UIElement.PreviewMouseLeftButtonDownEvent;
+                    args.Source = cell;
+                    cell.RaiseEvent(args);
+                }
+                e.Handled = true;
+            }
+        }
 
+        private void OnCellClick(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Border cell && cell.Tag is Position clickedPos)
+            {
+                if (_selectedPosition.HasValue)
+                {
+                    if (Game.TryMakeMove(_selectedPosition.Value, clickedPos))
+                    {
+                        CreateChessBoard();
+                    }
+                    ClearHighlights();
+                    _selectedPosition = null;
+                    e.Handled = true;
+                }
+                else
+                {
+                    var piece = Game.GetPiece(clickedPos);
+                    if (piece != null && piece.Color == Game.CurrentTurn)
+                    {
+                        _selectedPosition = clickedPos;
+                        HighlightCells((List<Position>)piece.GetAvailableMoves(Game.Board));
+                        e.Handled = true;
+                    }
+                }
+            }
+        }
         private void SaveGame_Click(object sender, RoutedEventArgs e) { }
         private void BackToMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -96,36 +147,7 @@ namespace ChessGameApplication.Windows
                 _ => ""
             };
         }
-        private void OnPieceMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is TextBlock textBlock && textBlock.Tag is Position pos)
-            {
-                var piece = Game.Board.GetPieceAt(pos);
-                if (piece == null || piece.Color != Game.CurrentTurn)
-                    return;
-
-                ClearHighlights();
-
-                allowedMoves = (List<Position>)piece.GetAvailableMoves(Game.Board);
-
-                HighlightCells(allowedMoves);
-
-                DragDrop.DoDragDrop(textBlock, new DataObject("ChessPiece", pos), DragDropEffects.Move);
-            }
-        }
-        private void OnCellDrop(object sender, DragEventArgs e)
-        {
-            ClearHighlights();
-            if (e.Data.GetDataPresent("ChessPiece") && sender is Border border && border.Tag is (int toRow, int toCol))
-            {
-                var from = (Position)e.Data.GetData("ChessPiece");
-
-                if (Game.TryMakeMove(from, new Position(toRow, toCol)))
-                {
-                    CreateChessBoard();
-                }
-            }
-        }
+        
         private void HighlightCells(List<Position> positions)
         {
             foreach (var pos in positions)
