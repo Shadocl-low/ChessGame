@@ -13,7 +13,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Reflection;
-using ChessGameApplication.Commands;
 using System.Xml.Linq;
 
 namespace ChessGameApplication.Windows
@@ -118,6 +117,7 @@ namespace ChessGameApplication.Windows
                     {
                         _selectedPosition = clickedPos;
                         HighlightCells((List<Position>)piece.GetAvailableMoves(Game.Board));
+                        HighlightCells(clickedPos);
                         e.Handled = true;
                     }
                 }
@@ -147,7 +147,7 @@ namespace ChessGameApplication.Windows
                 _ => ""
             };
         }
-        
+
         private void HighlightCells(List<Position> positions)
         {
             foreach (var pos in positions)
@@ -156,6 +156,13 @@ namespace ChessGameApplication.Windows
                 {
                     border.Background = new SolidColorBrush(Color.FromArgb(100, 50, 200, 50));
                 }
+            }
+        }
+        private void HighlightCells(Position pos)
+        {
+            if (positionToCellMap.TryGetValue(pos, out var border))
+            {
+                border.BorderThickness = new Thickness(5);
             }
         }
         private void ClearHighlights()
