@@ -76,6 +76,21 @@ namespace ChessGameApplication.Windows
                 }
             }
         }
+        private void UpdateBoardAfterMove(Position from, Position to)
+        {
+            if (positionToCellMap.TryGetValue(from, out var fromCell))
+            {
+                fromCell.Child = null;
+            }
+
+            if (positionToCellMap.TryGetValue(to, out var toCell))
+            {
+                var piece = Game.GetPiece(to);
+                toCell.Child = piece != null
+                    ? new TextBlock { Text = GetPieceSymbol(piece) }
+                    : null;
+            }
+        }
         private void OnPieceMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is TextBlock textBlock && textBlock.Tag is Position piecePos)
@@ -100,27 +115,33 @@ namespace ChessGameApplication.Windows
         {
             if (sender is Border cell && cell.Tag is Position clickedPos)
             {
+                var clickedPiece = Game.GetPiece(clickedPos);
+
                 if (_selectedPosition.HasValue)
                 {
-                    if (Game.TryMakeMove(_selectedPosition.Value, clickedPos))
+                    if (clickedPiece != null && clickedPiece.Color == Game.CurrentTurn)
+                    {
+                        ClearHighlights();
+                        _selectedPosition = clickedPos;
+                        HighlightCells((List<Position>)clickedPiece.GetAvailableMoves(Game.Board));
+                        HighlightCells(clickedPos);
+                    }
+                    
+                    else if (Game.TryMakeMove(_selectedPosition.Value, clickedPos))
                     {
                         CreateChessBoard();
+                        ClearHighlights();
+                        _selectedPosition = null;
                     }
-                    ClearHighlights();
-                    _selectedPosition = null;
-                    e.Handled = true;
                 }
-                else
+                else if (clickedPiece != null && clickedPiece.Color == Game.CurrentTurn)
                 {
-                    var piece = Game.GetPiece(clickedPos);
-                    if (piece != null && piece.Color == Game.CurrentTurn)
-                    {
-                        _selectedPosition = clickedPos;
-                        HighlightCells((List<Position>)piece.GetAvailableMoves(Game.Board));
-                        HighlightCells(clickedPos);
-                        e.Handled = true;
-                    }
+                    _selectedPosition = clickedPos;
+                    HighlightCells((List<Position>)clickedPiece.GetAvailableMoves(Game.Board));
+                    HighlightCells(clickedPos);
                 }
+
+                e.Handled = true;
             }
         }
         private void SaveGame_Click(object sender, RoutedEventArgs e) { }
@@ -162,25 +183,23 @@ namespace ChessGameApplication.Windows
         {
             if (positionToCellMap.TryGetValue(pos, out var border))
             {
-                border.BorderThickness = new Thickness(5);
+                border.BorderThickness = new Thickness(3);
             }
         }
         private void ClearHighlights()
         {
-            foreach (var pos in allowedMoves)
+            foreach (var cell in positionToCellMap.Values)
             {
-                if (positionToCellMap.TryGetValue(pos, out var border))
-                {
-                    border.Background = GetOriginalCellColor(pos);
-                }
+                cell.Background = GetOriginalCellColor((Position)cell.Tag);
+                cell.BorderThickness = new Thickness(0.5);
             }
             allowedMoves.Clear();
         }
         private Brush GetOriginalCellColor(Position pos)
         {
             return (pos.Row + pos.Column) % 2 == 0
-                ? Brushes.Beige
-                : Brushes.SaddleBrown;
+                ? lightCell
+                : darkCell;
         }
     }
 }
