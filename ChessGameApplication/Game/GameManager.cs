@@ -64,5 +64,9 @@ namespace ChessGameApplication.Game
         {
             return Board.GetPieceAt(position);
         }
+        public List<Position> GetPieceMoves(Piece piece)
+        {
+            return (List<Position>)piece.GetAvailableMoves(Board);
+        }
     }
 }

@@ -111,8 +111,7 @@ namespace ChessGameApplication.Windows
                     {
                         ClearHighlights();
                         _selectedPosition = clickedPos;
-                        HighlightCells((List<Position>)clickedPiece.GetAvailableMoves(Game.Board));
-                        HighlightCells(clickedPos);
+                        HighlightCells(clickedPiece);
                     }
                     
                     else if (Game.TryMakeMove(_selectedPosition.Value, clickedPos))
@@ -125,8 +124,7 @@ namespace ChessGameApplication.Windows
                 else if (clickedPiece != null && clickedPiece.Color == Game.CurrentTurn)
                 {
                     _selectedPosition = clickedPos;
-                    HighlightCells((List<Position>)clickedPiece.GetAvailableMoves(Game.Board));
-                    HighlightCells(clickedPos);
+                    HighlightCells(clickedPiece);
                 }
 
                 e.Handled = true;
@@ -156,22 +154,21 @@ namespace ChessGameApplication.Windows
                 _ => ""
             };
         }
-
-        private void HighlightCells(List<Position> positions)
+        private void HighlightCells(Piece piece)
         {
+            var positions = Game.GetPieceMoves(piece);
+
+            if (positionToCellMap.TryGetValue(piece.Position, out var border))
+            {
+                border.BorderThickness = new Thickness(3);
+            }
+
             foreach (var pos in positions)
             {
-                if (positionToCellMap.TryGetValue(pos, out var border))
+                if (positionToCellMap.TryGetValue(pos, out border))
                 {
                     border.Background = new SolidColorBrush(Color.FromArgb(100, 50, 200, 50));
                 }
-            }
-        }
-        private void HighlightCells(Position pos)
-        {
-            if (positionToCellMap.TryGetValue(pos, out var border))
-            {
-                border.BorderThickness = new Thickness(3);
             }
         }
         private void ClearHighlights()
