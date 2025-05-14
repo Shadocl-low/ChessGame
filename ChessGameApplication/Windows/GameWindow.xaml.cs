@@ -67,7 +67,6 @@ namespace ChessGameApplication.Windows
                             VerticalAlignment = VerticalAlignment.Center,
                             Tag = pos
                         };
-                        text.PreviewMouseLeftButtonDown += OnPieceMouseDown;
                         cell.Child = text;
                     }
 
@@ -86,28 +85,17 @@ namespace ChessGameApplication.Windows
             if (positionToCellMap.TryGetValue(to, out var toCell))
             {
                 var piece = Game.GetPiece(to);
-                toCell.Child = piece != null
-                    ? new TextBlock { Text = GetPieceSymbol(piece) }
-                    : null;
-            }
-        }
-        private void OnPieceMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is TextBlock textBlock && textBlock.Tag is Position piecePos)
-            {
-                if (textBlock.Parent is Border cell)
+                var text = new TextBlock
                 {
-                    var args = new MouseButtonEventArgs(
-                        e.MouseDevice,
-                        e.Timestamp,
-                        e.ChangedButton,
-                        e.StylusDevice
-                    );
-                    args.RoutedEvent = UIElement.PreviewMouseLeftButtonDownEvent;
-                    args.Source = cell;
-                    cell.RaiseEvent(args);
-                }
-                e.Handled = true;
+                    Text = GetPieceSymbol(piece!),
+                    FontSize = 32,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Tag = to
+                };
+                toCell.Child = piece != null
+                    ? text
+                    : null;
             }
         }
 
@@ -129,7 +117,7 @@ namespace ChessGameApplication.Windows
                     
                     else if (Game.TryMakeMove(_selectedPosition.Value, clickedPos))
                     {
-                        CreateChessBoard();
+                        UpdateBoardAfterMove(_selectedPosition.Value, clickedPos);
                         ClearHighlights();
                         _selectedPosition = null;
                     }
