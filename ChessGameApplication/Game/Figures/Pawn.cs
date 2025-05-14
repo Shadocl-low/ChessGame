@@ -15,14 +15,14 @@ namespace ChessGameApplication.Game.Figures
             var moves = new List<Position>();
 
             int direction = Color == PieceColor.White ? -1 : 1;
-            int startRow = Color == PieceColor.White ? 6 : 1;
+            int startColumn = Color == PieceColor.White ? 6 : 1;
 
             var forward = Position.Add(0, direction);
             if (board.IsInsideBoard(forward) && board.IsEmpty(forward))
                 moves.Add(forward);
 
             var doubleForward = Position.Add(0, direction * 2);
-            if (Position.Row == startRow && board.IsEmpty(forward) && board.IsEmpty(doubleForward))
+            if (Position.Column == startColumn && board.IsEmpty(forward) && board.IsEmpty(doubleForward))
                 moves.Add(doubleForward);
 
             foreach (int dx in new[] { -1, 1 })

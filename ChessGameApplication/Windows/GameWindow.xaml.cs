@@ -23,7 +23,6 @@ namespace ChessGameApplication.Windows
         private readonly SolidColorBrush darkCell = new SolidColorBrush(Color.FromRgb(181, 136, 99));
         private Position? _selectedPosition;
         private Dictionary<Position, Border> positionToCellMap = new();
-        private List<Position> allowedMoves = new();
 
         private readonly IWindowManager Manager;
         private readonly GameManager Game;
@@ -178,7 +177,6 @@ namespace ChessGameApplication.Windows
                 cell.Background = GetOriginalCellColor((Position)cell.Tag);
                 cell.BorderThickness = new Thickness(0.5);
             }
-            allowedMoves.Clear();
         }
         private Brush GetOriginalCellColor(Position pos)
         {
