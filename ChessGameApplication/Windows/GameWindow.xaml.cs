@@ -35,6 +35,7 @@ namespace ChessGameApplication.Windows
 
             Manager = manager;
             Game = new GameManager(imageStrategy);
+            Game.GameEnded += OnGameEnded;
 
             InitializeComponent();
             RenderChessBoard();
@@ -116,7 +117,7 @@ namespace ChessGameApplication.Windows
                         _selectedPosition = clickedPos;
                         HighlightCells(clickedPiece);
                     }
-                    
+
                     else if (Game.TryMakeMove(_selectedPosition.Value, clickedPos))
                     {
                         UpdateBoardAfterMove(_selectedPosition.Value, clickedPos);
@@ -206,7 +207,7 @@ namespace ChessGameApplication.Windows
         {
             UpdateTurnIndicators();
         }
-        private async void UpdateTurnIndicators()
+        private void UpdateTurnIndicators()
         {
             if (Game.CurrentTurn == PieceColor.Black)
             {
@@ -250,6 +251,21 @@ namespace ChessGameApplication.Windows
 
             await Task.Delay(300);
             element.Visibility = Visibility.Collapsed;
+        }
+        private string GetColorName(PieceColor color) =>
+            color == PieceColor.White ? "білий" : "чорний";
+        private void OnGameEnded(GameEndResult result)
+        {
+            string message = result.Reason switch
+            {
+                EndReason.Checkmate => $"Мат! Переміг {GetColorName(result.Winner!.Value)}.",
+                EndReason.Stalemate => "Пат - нічия!",
+                _ => "Гра завершена."
+            };
+
+            MessageBox.Show(message, "Гра завершена", MessageBoxButton.OK);
+
+            Manager.Notify(WindowActions.OpenMainMenu);
         }
     }
 }
