@@ -15,9 +15,8 @@ namespace ChessGameApplication
     {
         private static readonly string SettingsFilePath = "appsettings.json";
 
-        public event Action<string> ThemeChanged;
-        public event Action<string> WindowModeChanged;
-        public event Action<IPieceImageStrategy> PieceSkinChanged;
+        public event Action<string>? WindowModeChanged;
+        public event Action<IPieceImageStrategy>? PieceSkinChanged;
 
         public AppSettings? Settings { get; private set; }
         private readonly JsonSerializerOptions jsonSerializerOptions = new() { WriteIndented = true };
@@ -49,8 +48,6 @@ namespace ChessGameApplication
         {
             Instance.Settings!.Theme = theme;
             Instance.Save();
-
-            Instance.ThemeChanged?.Invoke(theme);
         }
         public static void SetWindowMode(string windowMode)
         {
