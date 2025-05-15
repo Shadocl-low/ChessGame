@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace ChessGameApplication.Game.Figures
 {
@@ -11,6 +12,7 @@ namespace ChessGameApplication.Game.Figures
     {
         public PieceColor Color { get; }
         public Position Position { get; set; }
+        public ImageSource? Image { get; protected set; }
 
         protected Piece(PieceColor color, Position position)
         {
