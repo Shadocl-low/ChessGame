@@ -106,5 +106,45 @@ namespace ChessGameApplication.Game
                          .Where(piece => piece != null)
                          .Select(piece => piece!);
         }
+        private Position FindKingPosition(PieceColor color)
+        {
+            for (int row = 0; row < 8; row++)
+            {
+                for (int col = 0; col < 8; col++)
+                {
+                    var piece = Squares[row, col];
+                    if (piece is King king && king.Color == color)
+                    {
+                        return new Position(row, col);
+                    }
+                }
+            }
+            throw new Exception("Король не знайдений");
+        }
+        private bool IsSquareUnderAttack(Position position, PieceColor defenderColor)
+        {
+            for (int row = 0; row < 8; row++)
+            {
+                for (int col = 0; col < 8; col++)
+                {
+                    var piece = Squares[row, col];
+                    if (piece != null && piece.Color != defenderColor)
+                    {
+                        var moves = piece.GetAvailableMoves(this);
+                        if (moves.Contains(position))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        public bool IsInCheck(PieceColor kingColor)
+        {
+            Position kingPosition = FindKingPosition(kingColor);
+            return IsSquareUnderAttack(kingPosition, kingColor);
+        }
+        
     }
 }
