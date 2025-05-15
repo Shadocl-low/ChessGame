@@ -33,9 +33,9 @@ namespace ChessGameApplication.Windows
             Game = new GameManager(imageStrategy);
 
             InitializeComponent();
-            CreateChessBoard();
+            RenderChessBoard();
         }
-        private void CreateChessBoard()
+        private void RenderChessBoard()
         {
             ChessBoard.Children.Clear();
             positionToCellMap.Clear();
