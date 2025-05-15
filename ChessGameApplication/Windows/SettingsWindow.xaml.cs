@@ -41,6 +41,7 @@ namespace ChessGameApplication.Windows
             SettingsManager.SetTheme(themeTag);
 
             ApplyTheme();
+            ApplySkinSettings();
         }
         private void ApplyTheme()
         {
@@ -89,6 +90,25 @@ namespace ChessGameApplication.Windows
         private void BackToMenu_Click(object sender, RoutedEventArgs e)
         {
             Manager.Notify(WindowActions.OpenMainMenu);
+        }
+        private void ApplySkinSettings()
+        {
+            foreach (ComboBoxItem item in PieceSkinComboBox.Items)
+            {
+                if (item.Tag.ToString() == Settings.PieceSkin)
+                {
+                    PieceSkinComboBox.SelectedItem = item;
+                    break;
+                }
+            }
+        }
+        private void PieceSkinComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (PieceSkinComboBox.SelectedItem is ComboBoxItem selectedItem && selectedItem.Tag != null)
+            {
+                string skinTag = selectedItem.Tag.ToString()!;
+                SettingsManager.SetPieceSkin(skinTag);
+            }
         }
     }
 }

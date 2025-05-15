@@ -72,6 +72,33 @@
                     <ComboBoxItem Content="Віконний" IsSelected="True"/>
                     <ComboBoxItem Content="На весь екран"/>
                 </ComboBox>
+
+                <TextBlock Text="Скін фігур:" 
+                           Grid.Row="2" Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource TextBlockStyle}" 
+                           HorizontalAlignment="Left"/>
+
+                <ComboBox Grid.Row="2" Grid.Column="1"
+                          Name="PieceSkinComboBox"
+                          SelectionChanged="PieceSkinComboBox_SelectionChanged" 
+                          HorizontalAlignment="Right" 
+                          VerticalAlignment="Center"
+                          Width="250"
+                          Style="{DynamicResource ComboBoxStyle}">
+                    <ComboBoxItem Tag="Classic">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/images/classic/king_light.png" Width="20" Height="20" Margin="0,0,5,0"/>
+                            <TextBlock Text="Класичний" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem Tag="Cute">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/images/cute/king_light_cute.png" Width="20" Height="20" Margin="0,0,5,0"/>
+                            <TextBlock Text="Милий" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ComboBoxItem>
+                </ComboBox>
             </Grid>
         </Border>
 

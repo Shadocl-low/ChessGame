@@ -56,18 +56,15 @@ namespace ChessGameApplication
             Instance.Settings!.PieceSkin = skin;
             Instance.Save();
         }
-        public static IPieceImageStrategy? GetImageStrategy()
+        public static IPieceImageStrategy GetImageStrategy()
         {
-            switch(Instance.Settings?.PieceSkin)
+            IPieceImageStrategy strategy = Instance.Settings?.PieceSkin switch
             {
-                case "Classic":
-                    return new ClassicPieceImageStrategy();
-                case "Cute":
-                    //return new CutePieceImageStrategy();
-                    return null;
-                default:
-                    throw new ArgumentException($"Невідомий скін: {Instance.Settings?.PieceSkin}");
-            }
+                "Cute" => new CutePieceImageStrategy(),
+                _ => new ClassicPieceImageStrategy()
+            };
+
+            return strategy;
         }
     }
 }
