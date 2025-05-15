@@ -18,7 +18,7 @@ using ChessGameApplication.Game.PieceImageStrategies;
 
 namespace ChessGameApplication.Windows
 {
-    public partial class GameWindow : Window
+    public partial class GameWindow : Window, IChangeWindowMode
     {
         private readonly SolidColorBrush lightCell = new SolidColorBrush(Color.FromRgb(240, 217, 181));
         private readonly SolidColorBrush darkCell = new SolidColorBrush(Color.FromRgb(181, 136, 99));
@@ -30,6 +30,7 @@ namespace ChessGameApplication.Windows
         public GameWindow(IWindowManager manager, IPieceImageStrategy imageStrategy)
         {
             SettingsManager.Instance.PieceSkinChanged += OnPieceSkinChanged;
+            SettingsManager.Instance.WindowModeChanged += OnWindowModeChanged;
 
             Manager = manager;
             Game = new GameManager(imageStrategy);
@@ -175,10 +176,35 @@ namespace ChessGameApplication.Windows
 
             RenderChessBoard();
         }
+        private void OnWindowModeChanged(string mode)
+        {
+            ChangeWindowMode(mode);
+        }
+        private void ChangeWindowMode(string mode)
+        {
+            switch (mode)
+            {
+                case "Windowed":
+                    WindowState = WindowState.Normal;
+                    WindowStyle = WindowStyle.SingleBorderWindow;
+                    ResizeMode = ResizeMode.CanResizeWithGrip;
+                    Topmost = false;
+                    Width = 1280;
+                    Height = 800;
+                    break;
+                case "Fullscreen":
+                    WindowState = WindowState.Maximized;
+                    WindowStyle = WindowStyle.None;
+                    ResizeMode = ResizeMode.NoResize;
+                    Topmost = true;
+                    break;
+            }
+        }
 
         protected override void OnClosed(EventArgs e)
         {
             SettingsManager.Instance.PieceSkinChanged -= OnPieceSkinChanged;
+            SettingsManager.Instance.WindowModeChanged -= OnWindowModeChanged;
             base.OnClosed(e);
         }
     }
