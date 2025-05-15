@@ -58,15 +58,15 @@ namespace ChessGameApplication.Windows
                     Piece? piece = Game.GetPiece(pos);
                     if (piece != null)
                     {
-                        var text = new TextBlock
+                        var image = new Image
                         {
-                            Text = GetPieceSymbol(piece),
-                            FontSize = 32,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            VerticalAlignment = VerticalAlignment.Center,
+                            Source = piece.Image,
+                            Stretch = Stretch.Uniform,
+                            Width = 40,
+                            Height = 40,
                             Tag = pos
                         };
-                        cell.Child = text;
+                        cell.Child = image;
                     }
 
                     ChessBoard.Children.Add(cell);
@@ -84,16 +84,16 @@ namespace ChessGameApplication.Windows
             if (positionToCellMap.TryGetValue(to, out var toCell))
             {
                 var piece = Game.GetPiece(to);
-                var text = new TextBlock
+                var image = new Image
                 {
-                    Text = GetPieceSymbol(piece!),
-                    FontSize = 32,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center,
+                    Source = piece?.Image,
+                    Stretch = Stretch.Uniform,
+                    Width = 40,
+                    Height = 40,
                     Tag = to
                 };
                 toCell.Child = piece != null
-                    ? text
+                    ? image
                     : null;
             }
         }

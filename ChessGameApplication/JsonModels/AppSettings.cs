@@ -10,5 +10,6 @@ namespace ChessGameApplication.JsonModels
     {
         public string Theme { get; set; } = "Light";
         public string WindowMode { get; set; } = "Windowed";
+        public string PieceSkin { get; set; } = "Classic";
     }
 }

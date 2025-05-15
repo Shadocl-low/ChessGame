@@ -50,5 +50,10 @@ namespace ChessGameApplication
             Instance.Settings!.WindowMode = windowMode;
             Instance.Save();
         }
+        public static void SetPieceSkin(string skin)
+        {
+            Instance.Settings!.PieceSkin = skin;
+            Instance.Save();
+        }
     }
 }
