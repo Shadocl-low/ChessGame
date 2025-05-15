@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChessGameApplication.Game.PieceImageStrategies;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace ChessGameApplication.Game.Figures
 {
     public class King : Piece
     {
-        public King(PieceColor color, Position position) : base(color, position) { }
+        public King(PieceColor color, Position position, IPieceImageStrategy imageStrategy) : base(color, position, imageStrategy) { }
 
         public override List<Position> GetAvailableMoves(Board board)
         {

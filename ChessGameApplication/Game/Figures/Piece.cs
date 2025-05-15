@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChessGameApplication.Game.PieceImageStrategies;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,10 +15,11 @@ namespace ChessGameApplication.Game.Figures
         public Position Position { get; set; }
         public ImageSource? Image { get; protected set; }
 
-        protected Piece(PieceColor color, Position position)
+        protected Piece(PieceColor color, Position position, IPieceImageStrategy imageStrategy)
         {
             Color = color;
             Position = position;
+            Image = imageStrategy.GetImageForPiece(this);
         }
         public abstract IEnumerable<Position> GetAvailableMoves(Board board);
     }

@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="UsersData\" />
+    <Folder Include="Images\" />
   </ItemGroup>
 
 </Project>
