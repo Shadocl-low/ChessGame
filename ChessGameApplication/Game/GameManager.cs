@@ -10,6 +10,8 @@ namespace ChessGameApplication.Game
 {
     public class GameManager
     {
+        public event Action<GameEndResult> GameEnded;
+
         public Board Board { get; private set; }
         public PieceColor CurrentTurn { get; private set; } = PieceColor.White;
         private IPieceImageStrategy? _currentStrategy;
@@ -45,11 +47,13 @@ namespace ChessGameApplication.Game
 
             if (Board.IsCheckmate(opponentColor))
             {
-                
+                IsGameOver = true;
+                GameEnded?.Invoke(new GameEndResult(CurrentTurn, EndReason.Checkmate));
             }
             else if (Board.IsStalemate(opponentColor))
             {
-                
+                IsGameOver = true;
+                GameEnded?.Invoke(new GameEndResult(null, EndReason.Stalemate));
             }
             else if (Board.IsInCheck(opponentColor))
             {
