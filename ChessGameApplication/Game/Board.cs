@@ -39,7 +39,7 @@ namespace ChessGameApplication.Game
         {
             ImageStrategy = imageStrategy;
         }
-        public void PlacePiece(Piece piece, Position position)
+        public void PlacePiece(Piece? piece, Position position)
         {
             Squares[position.Row, position.Column] = piece;
             piece.Position = position;
@@ -145,6 +145,67 @@ namespace ChessGameApplication.Game
             Position kingPosition = FindKingPosition(kingColor);
             return IsSquareUnderAttack(kingPosition, kingColor);
         }
-        
+        private bool WouldBeInCheckAfterMove(Position from, Position to, PieceColor movingColor)
+        {
+            var originalPiece = GetPieceAt(to);
+            MovePiece(from, to);
+
+            bool isInCheck = IsInCheck(movingColor);
+
+            MovePiece(to, from);
+            PlacePiece(originalPiece, to);
+
+            return isInCheck;
+        }
+        private Dictionary<Position, List<Position>> GetAllPossibleMoves(PieceColor color)
+        {
+            var allMoves = new Dictionary<Position, List<Position>>();
+
+            for (int row = 0; row < 8; row++)
+            {
+                for (int col = 0; col < 8; col++)
+                {
+                    var piece = Squares[row, col];
+                    if (piece != null && piece.Color == color)
+                    {
+                        var position = new Position(row, col);
+                        var validMoves = new List<Position>();
+
+                        foreach (var move in piece.GetAvailableMoves(this))
+                        {
+                            if (!WouldBeInCheckAfterMove(position, move, color))
+                            {
+                                validMoves.Add(move);
+                            }
+                        }
+
+                        if (validMoves.Any())
+                        {
+                            allMoves[position] = validMoves;
+                        }
+                    }
+                }
+            }
+
+            return allMoves;
+        }
+        public bool IsCheckmate(PieceColor kingColor)
+        {
+            if (!IsInCheck(kingColor))
+                return false;
+
+            var allPossibleMoves = GetAllPossibleMoves(kingColor);
+
+            return !allPossibleMoves.Any();
+        }
+
+        public bool IsStalemate(PieceColor currentPlayer)
+        {
+            if (IsInCheck(currentPlayer))
+                return false;
+
+            var allPossibleMoves = GetAllPossibleMoves(currentPlayer);
+            return !allPossibleMoves.Any();
+        }
     }
 }
