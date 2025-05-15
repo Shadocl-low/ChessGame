@@ -15,8 +15,10 @@ namespace ChessGameApplication.Game
         private IPieceImageStrategy? _currentStrategy;
         public bool IsGameOver { get; private set; }
 
-        public GameManager()
+        public GameManager(IPieceImageStrategy imageStrategy)
         {
+            _currentStrategy = imageStrategy;
+
             Board = new Board();
 
             StartNewGame();
@@ -26,6 +28,8 @@ namespace ChessGameApplication.Game
             Board.Initialize(); 
             CurrentTurn = PieceColor.White;
             IsGameOver = false;
+
+            UpdateImageStrategy(_currentStrategy!);
         }
 
         public bool TryMakeMove(Position from, Position to)

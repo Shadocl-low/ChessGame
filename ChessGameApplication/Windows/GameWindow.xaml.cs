@@ -27,12 +27,12 @@ namespace ChessGameApplication.Windows
 
         private readonly IWindowManager Manager;
         private readonly GameManager Game;
-        public GameWindow(IWindowManager manager)
+        public GameWindow(IWindowManager manager, IPieceImageStrategy imageStrategy)
         {
             SettingsManager.Instance.PieceSkinChanged += OnPieceSkinChanged;
 
             Manager = manager;
-            Game = new GameManager();
+            Game = new GameManager(imageStrategy);
 
             InitializeComponent();
             RenderChessBoard();
