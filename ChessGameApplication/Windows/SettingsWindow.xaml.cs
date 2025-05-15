@@ -29,6 +29,9 @@ namespace ChessGameApplication.Windows
 
             InitializeComponent();
 
+
+            ApplySkinSettings();
+            ApplyWindowModeSettings();
             ApplyTheme();
         }
 
@@ -41,7 +44,6 @@ namespace ChessGameApplication.Windows
             SettingsManager.SetTheme(themeTag);
 
             ApplyTheme();
-            ApplySkinSettings();
         }
         private void ApplyTheme()
         {
@@ -82,9 +84,24 @@ namespace ChessGameApplication.Windows
             Application.Current.Resources.MergedDictionaries.Remove(oldThemeDict);
             Application.Current.Resources.MergedDictionaries.Add(dict);
         }
+        private void ApplyWindowModeSettings()
+        {
+            foreach (ComboBoxItem item in WindowModeComboBox.Items)
+            {
+                if (item.Tag.ToString() == Settings.WindowMode)
+                {
+                    WindowModeComboBox.SelectedItem = item;
+                    break;
+                }
+            }
+        }
         private void WindowModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (WindowModeComboBox.SelectedItem is ComboBoxItem selectedItem && selectedItem.Tag != null)
+            {
+                string modeTag = selectedItem.Tag.ToString()!;
+                SettingsManager.SetWindowMode(modeTag);
+            }
         }
 
         private void BackToMenu_Click(object sender, RoutedEventArgs e)
