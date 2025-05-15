@@ -18,7 +18,7 @@ namespace ChessGameApplication.Windows.Manager
         public WindowManager()
         {
             settingsWindow = new SettingsWindow(this);
-            gameWindow = new GameWindow(this, SettingsManager.GetImageStrategy()!);
+            gameWindow = new GameWindow(this);
             mainMenuWindow = new MainMenuWindow(this);
         }
         public void Notify(WindowActions action)

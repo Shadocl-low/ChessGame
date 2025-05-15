@@ -12,12 +12,12 @@ namespace ChessGameApplication.Game
     {
         public Board Board { get; private set; }
         public PieceColor CurrentTurn { get; private set; } = PieceColor.White;
+        private IPieceImageStrategy? _currentStrategy;
         public bool IsGameOver { get; private set; }
 
-        public GameManager(IPieceImageStrategy imageStrategy)
+        public GameManager()
         {
             Board = new Board();
-            Board.SetStrategy(imageStrategy);
 
             StartNewGame();
         }
@@ -73,6 +73,15 @@ namespace ChessGameApplication.Game
         public bool IsEnemyPiece(Position pos)
         {
             return Board.IsEnemyPiece(pos, CurrentTurn);
+        }
+        public void UpdateImageStrategy(IPieceImageStrategy newStrategy)
+        {
+            _currentStrategy = newStrategy;
+
+            foreach (var piece in Board.GetAllPieces())
+            {
+                piece.UpdateImage(_currentStrategy);
+            }
         }
     }
 }

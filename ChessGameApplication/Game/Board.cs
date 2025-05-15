@@ -24,15 +24,15 @@ namespace ChessGameApplication.Game
             };
 
             foreach (var (type, x, y) in startingPieces)
-                PlacePiece((Piece)Activator.CreateInstance(type, PieceColor.Black, new Position(x, y), ImageStrategy)!, new Position(x, y));
+                PlacePiece((Piece)Activator.CreateInstance(type, PieceColor.Black, new Position(x, y))!, new Position(x, y));
 
             foreach (var (type, x, y) in startingPieces)
-                PlacePiece((Piece)Activator.CreateInstance(type, PieceColor.White, new Position(x, 7), ImageStrategy)!, new Position(x, 7));
+                PlacePiece((Piece)Activator.CreateInstance(type, PieceColor.White, new Position(x, 7))!, new Position(x, 7));
 
             for (int x = 0; x < 8; x++)
             {
-                PlacePiece(new Pawn(PieceColor.Black, new Position(x, 1), ImageStrategy), new Position(x, 1));
-                PlacePiece(new Pawn(PieceColor.White, new Position(x, 6), ImageStrategy), new Position(x, 6));
+                PlacePiece(new Pawn(PieceColor.Black, new Position(x, 1)), new Position(x, 1));
+                PlacePiece(new Pawn(PieceColor.White, new Position(x, 6)), new Position(x, 6));
             }
         }
         public void SetStrategy(IPieceImageStrategy imageStrategy)
@@ -99,6 +99,12 @@ namespace ChessGameApplication.Game
         public bool IsKingCaptured(PieceColor color)
         {
             return !Squares.Cast<Piece?>().Any(p => p is King k && k.Color == color);
+        }
+        public IEnumerable<Piece> GetAllPieces()
+        {
+            return Squares.Cast<Piece?>()
+                         .Where(piece => piece != null)
+                         .Select(piece => piece!);
         }
     }
 }

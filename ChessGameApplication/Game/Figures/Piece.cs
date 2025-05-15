@@ -15,12 +15,15 @@ namespace ChessGameApplication.Game.Figures
         public Position Position { get; set; }
         public ImageSource? Image { get; protected set; }
 
-        protected Piece(PieceColor color, Position position, IPieceImageStrategy imageStrategy)
+        protected Piece(PieceColor color, Position position)
         {
             Color = color;
             Position = position;
-            Image = imageStrategy.GetImageForPiece(this);
         }
         public abstract IEnumerable<Position> GetAvailableMoves(Board board);
+        public void UpdateImage(IPieceImageStrategy strategy)
+        {
+            Image = strategy.GetImageForPiece(this);
+        }
     }
 }

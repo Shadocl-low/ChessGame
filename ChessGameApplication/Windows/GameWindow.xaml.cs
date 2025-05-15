@@ -27,10 +27,12 @@ namespace ChessGameApplication.Windows
 
         private readonly IWindowManager Manager;
         private readonly GameManager Game;
-        public GameWindow(IWindowManager manager, IPieceImageStrategy imageStrategy)
+        public GameWindow(IWindowManager manager)
         {
+            SettingsManager.Instance.PieceSkinChanged += OnPieceSkinChanged;
+
             Manager = manager;
-            Game = new GameManager(imageStrategy);
+            Game = new GameManager();
 
             InitializeComponent();
             RenderChessBoard();
@@ -166,6 +168,18 @@ namespace ChessGameApplication.Windows
             return (pos.Row + pos.Column) % 2 == 0
                 ? lightCell
                 : darkCell;
+        }
+        private void OnPieceSkinChanged(IPieceImageStrategy newStrategy)
+        {
+            Game.UpdateImageStrategy(newStrategy);
+
+            RenderChessBoard();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            SettingsManager.Instance.PieceSkinChanged -= OnPieceSkinChanged;
+            base.OnClosed(e);
         }
     }
 }
