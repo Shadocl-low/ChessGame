@@ -22,6 +22,7 @@ namespace ChessGameApplication.Windows
     {
         private AppSettings Settings;
         private readonly IWindowManager Manager;
+        private bool _isInitializing = true;
         public SettingsWindow(IWindowManager manager)
         {
             Manager = manager;
@@ -29,22 +30,13 @@ namespace ChessGameApplication.Windows
 
             InitializeComponent();
 
-
             ApplySkinSettings();
             ApplyWindowModeSettings();
             ApplyTheme();
+
+            _isInitializing = false;
         }
 
-        private void ThemeRadioButton_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is not RadioButton radio || radio.Tag == null) return;
-
-            string themeTag = radio.Tag.ToString()!;
-
-            SettingsManager.SetTheme(themeTag);
-
-            ApplyTheme();
-        }
         private void ApplyTheme()
         {
             var themeActions = new Dictionary<string, Action>
@@ -70,7 +62,6 @@ namespace ChessGameApplication.Windows
                 throw new ArgumentException("Wrong theme selection");
             }
         }
-
         private void ApplyThemeResource(string path)
         {
             var dict = new ResourceDictionary
@@ -84,6 +75,16 @@ namespace ChessGameApplication.Windows
             Application.Current.Resources.MergedDictionaries.Remove(oldThemeDict);
             Application.Current.Resources.MergedDictionaries.Add(dict);
         }
+        private void ThemeRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_isInitializing) return;
+            if (sender is not RadioButton radio || radio.Tag == null) return;
+
+            string themeTag = radio.Tag.ToString()!;
+            SettingsManager.SetTheme(themeTag);
+            ApplyTheme();
+        }
+
         private void ApplyWindowModeSettings()
         {
             foreach (ComboBoxItem item in WindowModeComboBox.Items)
@@ -104,10 +105,6 @@ namespace ChessGameApplication.Windows
             }
         }
 
-        private void BackToMenu_Click(object sender, RoutedEventArgs e)
-        {
-            Manager.Notify(WindowActions.OpenMainMenu);
-        }
         private void ApplySkinSettings()
         {
             foreach (ComboBoxItem item in PieceSkinComboBox.Items)
@@ -126,6 +123,10 @@ namespace ChessGameApplication.Windows
                 string skinTag = selectedItem.Tag.ToString()!;
                 SettingsManager.SetPieceSkin(skinTag);
             }
+        }
+        private void BackToMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Manager.Notify(WindowActions.OpenMainMenu);
         }
     }
 }
