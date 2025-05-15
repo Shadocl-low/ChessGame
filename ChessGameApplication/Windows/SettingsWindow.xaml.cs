@@ -1,4 +1,5 @@
-﻿using ChessGameApplication.JsonModels;
+﻿using ChessGameApplication.Game.PieceImageStrategies;
+using ChessGameApplication.JsonModels;
 using ChessGameApplication.Windows.Manager;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,15 @@ using System.Windows.Shapes;
 
 namespace ChessGameApplication.Windows
 {
-    public partial class SettingsWindow : Window
+    public partial class SettingsWindow : Window, IChangeWindowMode
     {
         private AppSettings Settings;
         private readonly IWindowManager Manager;
         private bool _isInitializing = true;
         public SettingsWindow(IWindowManager manager)
         {
+            SettingsManager.Instance.WindowModeChanged += OnWindowModeChanged;
+
             Manager = manager;
             Settings = SettingsManager.Instance.Settings!;
 
@@ -123,6 +126,36 @@ namespace ChessGameApplication.Windows
                 string skinTag = selectedItem.Tag.ToString()!;
                 SettingsManager.SetPieceSkin(skinTag);
             }
+        }
+        private void OnWindowModeChanged(string mode)
+        {
+            ChangeWindowMode(mode);
+        }
+        public void ChangeWindowMode(string mode)
+        {
+            switch (mode)
+            {
+                case "Windowed":
+                    WindowState = WindowState.Normal;
+                    WindowStyle = WindowStyle.SingleBorderWindow;
+                    ResizeMode = ResizeMode.NoResize;
+                    Topmost = false;
+                    Width = 1280;
+                    Height = 800;
+                    break;
+                case "Fullscreen":
+                    WindowState = WindowState.Maximized;
+                    WindowStyle = WindowStyle.None;
+                    ResizeMode = ResizeMode.NoResize;
+                    Topmost = true;
+                    break;
+            }
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            SettingsManager.Instance.WindowModeChanged -= OnWindowModeChanged;
+            base.OnClosed(e);
         }
         private void BackToMenu_Click(object sender, RoutedEventArgs e)
         {

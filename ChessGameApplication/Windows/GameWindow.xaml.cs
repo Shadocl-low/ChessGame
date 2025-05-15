@@ -180,7 +180,7 @@ namespace ChessGameApplication.Windows
         {
             ChangeWindowMode(mode);
         }
-        private void ChangeWindowMode(string mode)
+        public void ChangeWindowMode(string mode)
         {
             switch (mode)
             {

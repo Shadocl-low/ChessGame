@@ -17,11 +17,13 @@ using System.Windows.Shapes;
 
 namespace ChessGameApplication.Windows
 {
-    public partial class MainMenuWindow : Window
+    public partial class MainMenuWindow : Window, IChangeWindowMode
     {
         private readonly IWindowManager Manager;
         public MainMenuWindow(IWindowManager manager)
         {
+            SettingsManager.Instance.WindowModeChanged += OnWindowModeChanged;
+
             Manager = manager;
 
             InitializeComponent();
@@ -44,6 +46,36 @@ namespace ChessGameApplication.Windows
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Manager.Notify(WindowActions.Exit);
+        }
+        private void OnWindowModeChanged(string mode)
+        {
+            ChangeWindowMode(mode);
+        }
+        public void ChangeWindowMode(string mode)
+        {
+            switch (mode)
+            {
+                case "Windowed":
+                    WindowState = WindowState.Normal;
+                    WindowStyle = WindowStyle.SingleBorderWindow;
+                    ResizeMode = ResizeMode.CanResizeWithGrip;
+                    Topmost = false;
+                    Width = 1280;
+                    Height = 800;
+                    break;
+                case "Fullscreen":
+                    WindowState = WindowState.Maximized;
+                    WindowStyle = WindowStyle.None;
+                    ResizeMode = ResizeMode.NoResize;
+                    Topmost = true;
+                    break;
+            }
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            SettingsManager.Instance.WindowModeChanged -= OnWindowModeChanged;
+            base.OnClosed(e);
         }
     }
 }
