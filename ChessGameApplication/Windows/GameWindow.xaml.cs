@@ -137,6 +137,8 @@ namespace ChessGameApplication.Windows
         private void HighlightCells(Piece piece)
         {
             var positions = Game.GetPieceMoves(piece);
+            var cellBgFree = new SolidColorBrush(Color.FromArgb(100, 50, 200, 50));
+            var cellBgEnemy = new SolidColorBrush(Color.FromArgb(100, 200, 100, 50));
 
             if (positionToCellMap.TryGetValue(piece.Position, out var border))
             {
@@ -147,7 +149,7 @@ namespace ChessGameApplication.Windows
             {
                 if (positionToCellMap.TryGetValue(pos, out border))
                 {
-                    border.Background = new SolidColorBrush(Color.FromArgb(100, 50, 200, 50));
+                    border.Background = Game.IsEnemyPiece(pos) ? cellBgEnemy : cellBgFree;
                 }
             }
         }

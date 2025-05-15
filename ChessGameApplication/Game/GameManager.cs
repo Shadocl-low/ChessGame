@@ -70,5 +70,9 @@ namespace ChessGameApplication.Game
         {
             return (List<Position>)piece.GetAvailableMoves(Board);
         }
+        public bool IsEnemyPiece(Position pos)
+        {
+            return Board.IsEnemyPiece(pos, CurrentTurn);
+        }
     }
 }
