@@ -15,12 +15,12 @@ namespace ChessGameApplication.Game.PieceImageStrategies
         {
             string imageName = piece switch
             {
-                King _ => "King",
-                Queen _ => "Queen",
-                Rook _ => "Rook",
-                Bishop _ => "Bishop",
-                Knight _ => "Knight",
-                Pawn _ => "Pawn",
+                King _ => "king",
+                Queen _ => "queen",
+                Rook _ => "rook",
+                Bishop _ => "bishop",
+                Knight _ => "knight",
+                Pawn _ => "pawn",
                 _ => throw new ArgumentException("Unknown piece type")
             };
 
@@ -29,7 +29,7 @@ namespace ChessGameApplication.Game.PieceImageStrategies
             else
                 imageName += "_light";
 
-            return new BitmapImage(new Uri($"pack://application:,,,/Images/Classic/{imageName}.png"));
+            return new BitmapImage(new Uri($"pack://application:,,,/images/classic/{imageName}.png"));
         }
     }
 }

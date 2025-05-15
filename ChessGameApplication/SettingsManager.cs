@@ -1,4 +1,5 @@
-﻿using ChessGameApplication.JsonModels;
+﻿using ChessGameApplication.Game.PieceImageStrategies;
+using ChessGameApplication.JsonModels;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,19 @@ namespace ChessGameApplication
         {
             Instance.Settings!.PieceSkin = skin;
             Instance.Save();
+        }
+        public static IPieceImageStrategy? GetImageStrategy()
+        {
+            switch(Instance.Settings?.PieceSkin)
+            {
+                case "Classic":
+                    return new ClassicPieceImageStrategy();
+                case "Cute":
+                    //return new CutePieceImageStrategy();
+                    return null;
+                default:
+                    throw new ArgumentException($"Невідомий скін: {Instance.Settings?.PieceSkin}");
+            }
         }
     }
 }

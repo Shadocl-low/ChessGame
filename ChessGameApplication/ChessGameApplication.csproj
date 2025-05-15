@@ -9,7 +9,57 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Images\" />
+    <None Remove="images\classic\bishop_dark.png" />
+    <None Remove="images\classic\bishop_light.png" />
+    <None Remove="images\classic\king_dark.png" />
+    <None Remove="images\classic\king_light.png" />
+    <None Remove="images\classic\knight_dark.png" />
+    <None Remove="images\classic\knight_light.png" />
+    <None Remove="images\classic\pawn_dark.png" />
+    <None Remove="images\classic\pawn_light.png" />
+    <None Remove="images\classic\queen_dark.png" />
+    <None Remove="images\classic\queen_light.png" />
+    <None Remove="images\classic\rook_dark.png" />
+    <None Remove="images\classic\rook_light.png" />
+    <None Remove="images\Cute\Bishop_dark_cute.png" />
+    <None Remove="images\Cute\Bishop_light_cute.png" />
+    <None Remove="images\Cute\King_dark_cute.png" />
+    <None Remove="images\Cute\King_light_cute.png" />
+    <None Remove="images\Cute\Knight_dark_cute.png" />
+    <None Remove="images\Cute\Knight_light_cute.png" />
+    <None Remove="images\Cute\Pawn_dark_cute.png" />
+    <None Remove="images\Cute\Pawn_light_cute.png" />
+    <None Remove="images\Cute\Queen_dark_cute.png" />
+    <None Remove="images\Cute\Queen_light_cute.png" />
+    <None Remove="images\Cute\Rook_dark_cute.png" />
+    <None Remove="images\Cute\Rook_light_cute.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="images\classic\bishop_dark.png" />
+    <Resource Include="images\classic\bishop_light.png" />
+    <Resource Include="images\classic\king_dark.png" />
+    <Resource Include="images\classic\king_light.png" />
+    <Resource Include="images\classic\knight_dark.png" />
+    <Resource Include="images\classic\knight_light.png" />
+    <Resource Include="images\classic\pawn_dark.png" />
+    <Resource Include="images\classic\pawn_light.png" />
+    <Resource Include="images\classic\queen_dark.png" />
+    <Resource Include="images\classic\queen_light.png" />
+    <Resource Include="images\classic\rook_dark.png" />
+    <Resource Include="images\classic\rook_light.png" />
+    <Resource Include="images\Cute\Bishop_dark_cute.png" />
+    <Resource Include="images\Cute\Bishop_light_cute.png" />
+    <Resource Include="images\Cute\King_dark_cute.png" />
+    <Resource Include="images\Cute\King_light_cute.png" />
+    <Resource Include="images\Cute\Knight_dark_cute.png" />
+    <Resource Include="images\Cute\Knight_light_cute.png" />
+    <Resource Include="images\Cute\Pawn_dark_cute.png" />
+    <Resource Include="images\Cute\Pawn_light_cute.png" />
+    <Resource Include="images\Cute\Queen_dark_cute.png" />
+    <Resource Include="images\Cute\Queen_light_cute.png" />
+    <Resource Include="images\Cute\Rook_dark_cute.png" />
+    <Resource Include="images\Cute\Rook_light_cute.png" />
   </ItemGroup>
 
 </Project>

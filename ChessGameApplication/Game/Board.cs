@@ -1,4 +1,5 @@
 ﻿using ChessGameApplication.Game.Figures;
+using ChessGameApplication.Game.PieceImageStrategies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace ChessGameApplication.Game
     public class Board
     {
         private readonly Piece?[,] Squares = new Piece?[8, 8];
+        private IPieceImageStrategy? ImageStrategy;
         public void Initialize()
         {
             var startingPieces = new (Type pieceType, int x, int y)[]
@@ -22,16 +24,20 @@ namespace ChessGameApplication.Game
             };
 
             foreach (var (type, x, y) in startingPieces)
-                PlacePiece((Piece)Activator.CreateInstance(type, PieceColor.Black, new Position(x, y))!, new Position(x, y));
+                PlacePiece((Piece)Activator.CreateInstance(type, PieceColor.Black, new Position(x, y), ImageStrategy)!, new Position(x, y));
 
             foreach (var (type, x, y) in startingPieces)
-                PlacePiece((Piece)Activator.CreateInstance(type, PieceColor.White, new Position(x, 7))!, new Position(x, 7));
+                PlacePiece((Piece)Activator.CreateInstance(type, PieceColor.White, new Position(x, 7), ImageStrategy)!, new Position(x, 7));
 
             for (int x = 0; x < 8; x++)
             {
-                PlacePiece(new Pawn(PieceColor.Black, new Position(x, 1)), new Position(x, 1));
-                PlacePiece(new Pawn(PieceColor.White, new Position(x, 6)), new Position(x, 6));
+                PlacePiece(new Pawn(PieceColor.Black, new Position(x, 1), ImageStrategy), new Position(x, 1));
+                PlacePiece(new Pawn(PieceColor.White, new Position(x, 6), ImageStrategy), new Position(x, 6));
             }
+        }
+        public void SetStrategy(IPieceImageStrategy imageStrategy)
+        {
+            ImageStrategy = imageStrategy;
         }
         public void PlacePiece(Piece piece, Position position)
         {

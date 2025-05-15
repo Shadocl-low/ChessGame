@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Reflection;
 using System.Xml.Linq;
+using ChessGameApplication.Game.PieceImageStrategies;
 
 namespace ChessGameApplication.Windows
 {
@@ -21,20 +22,19 @@ namespace ChessGameApplication.Windows
     {
         private readonly SolidColorBrush lightCell = new SolidColorBrush(Color.FromRgb(240, 217, 181));
         private readonly SolidColorBrush darkCell = new SolidColorBrush(Color.FromRgb(181, 136, 99));
-        private Position? _selectedPosition;
         private Dictionary<Position, Border> positionToCellMap = new();
+        private Position? _selectedPosition;
 
         private readonly IWindowManager Manager;
         private readonly GameManager Game;
-        public GameWindow(IWindowManager manager)
+        public GameWindow(IWindowManager manager, IPieceImageStrategy imageStrategy)
         {
             Manager = manager;
-            Game = new GameManager();
+            Game = new GameManager(imageStrategy);
 
             InitializeComponent();
             CreateChessBoard();
         }
-
         private void CreateChessBoard()
         {
             ChessBoard.Children.Clear();
@@ -133,25 +133,6 @@ namespace ChessGameApplication.Windows
         private void BackToMenu_Click(object sender, RoutedEventArgs e)
         {
             Manager.Notify(WindowActions.OpenMainMenu);
-        }
-        private string GetPieceSymbol(Piece piece)
-        {
-            return piece switch
-            {
-                Pawn p when p.Color == PieceColor.White => "♙",
-                Rook r when r.Color == PieceColor.White => "♖",
-                Knight k when k.Color == PieceColor.White => "♘",
-                Bishop b when b.Color == PieceColor.White => "♗",
-                Queen q when q.Color == PieceColor.White => "♕",
-                King k when k.Color == PieceColor.White => "♔",
-                Pawn p when p.Color == PieceColor.Black => "♟",
-                Rook r when r.Color == PieceColor.Black => "♜",
-                Knight k when k.Color == PieceColor.Black => "♞",
-                Bishop b when b.Color == PieceColor.Black => "♝",
-                Queen q when q.Color == PieceColor.Black => "♛",
-                King k when k.Color == PieceColor.Black => "♚",
-                _ => ""
-            };
         }
         private void HighlightCells(Piece piece)
         {

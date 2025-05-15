@@ -1,4 +1,5 @@
 ﻿using ChessGameApplication.Game.Figures;
+using ChessGameApplication.Game.PieceImageStrategies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,13 @@ namespace ChessGameApplication.Game
         public PieceColor CurrentTurn { get; private set; } = PieceColor.White;
         public bool IsGameOver { get; private set; }
 
-        public GameManager()
+        public GameManager(IPieceImageStrategy imageStrategy)
         {
             Board = new Board();
+            Board.SetStrategy(imageStrategy);
+
             StartNewGame();
         }
-
         public void StartNewGame()
         {
             Board.Initialize(); 
