@@ -145,7 +145,7 @@ namespace ChessGameApplication.Game
             Position kingPosition = FindKingPosition(kingColor);
             return IsSquareUnderAttack(kingPosition, kingColor);
         }
-        private bool WouldBeInCheckAfterMove(Position from, Position to, PieceColor movingColor)
+        public bool WouldBeInCheckAfterMove(Position from, Position to, PieceColor movingColor)
         {
             var originalPiece = GetPieceAt(to);
             MovePiece(from, to);

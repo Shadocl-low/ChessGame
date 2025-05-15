@@ -31,7 +31,31 @@ namespace ChessGameApplication.Game
 
             UpdateImageStrategy(_currentStrategy!);
         }
+        private bool IsMoveLegalConsideringCheck(Position from, Position to)
+        {
+            var piece = Board.GetPieceAt(from);
+            if (!piece.GetAvailableMoves(Board).Contains(to))
+                return false;
 
+            return !Board.WouldBeInCheckAfterMove(from, to, CurrentTurn);
+        }
+        private void CheckGameEndConditions()
+        {
+            var opponentColor = CurrentTurn == PieceColor.White ? PieceColor.Black : PieceColor.White;
+
+            if (Board.IsCheckmate(opponentColor))
+            {
+                
+            }
+            else if (Board.IsStalemate(opponentColor))
+            {
+                
+            }
+            else if (Board.IsInCheck(opponentColor))
+            {
+                
+            }
+        }
         public bool TryMakeMove(Position from, Position to)
         {
             if (IsGameOver) return false;
@@ -40,18 +64,17 @@ namespace ChessGameApplication.Game
             if (piece == null || piece.Color != CurrentTurn)
                 return false;
 
-            var legalMoves = piece.GetAvailableMoves(Board);
-            if (!legalMoves.Contains(to))
+            if (!IsMoveLegalConsideringCheck(from, to))
                 return false;
 
             Board.MovePiece(from, to);
 
-            if (Board.IsKingCaptured(PieceColor.Black) || Board.IsKingCaptured(PieceColor.White))
-            {
-                IsGameOver = true;
-            }
+            CheckGameEndConditions();
 
-            ChangeTurn();
+            if (!IsGameOver)
+            {
+                ChangeTurn();
+            }
 
             return true;
         }
