@@ -9,7 +9,7 @@ namespace ChessGameApplication.Game.Figures
 {
     public class Bishop : Piece
     {
-        public Bishop(PieceColor color, Position position, IPieceImageStrategy imageStrategy) : base(color, position, imageStrategy) { }
+        public Bishop(PieceColor color, Position position) : base(color, position) { }
 
         public override List<Position> GetAvailableMoves(Board board)
         {

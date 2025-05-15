@@ -9,7 +9,7 @@ namespace ChessGameApplication.Game.Figures
 {
     public class Pawn : Piece
     {
-        public Pawn(PieceColor color, Position position, IPieceImageStrategy imageStrategy) : base(color, position, imageStrategy) { }
+        public Pawn(PieceColor color, Position position) : base(color, position) { }
 
         public override List<Position> GetAvailableMoves(Board board)
         {

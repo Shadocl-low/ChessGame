@@ -9,7 +9,7 @@ namespace ChessGameApplication.Game.Figures
 {
     public class Knight : Piece
     {
-        public Knight(PieceColor color, Position position, IPieceImageStrategy imageStrategy) : base(color, position, imageStrategy) { }
+        public Knight(PieceColor color, Position position) : base(color, position) { }
 
         public override List<Position> GetAvailableMoves(Board board)
         {
