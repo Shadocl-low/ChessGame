@@ -10,7 +10,7 @@
         Width="1280" Height="720"
         Background="{DynamicResource WindowBackgroundBrush}"
         ResizeMode="NoResize">
-
+    
     <Grid Margin="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

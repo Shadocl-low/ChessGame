@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Xml.Linq;
 using ChessGameApplication.Game.PieceImageStrategies;
+using System.Windows.Media.Animation;
 
 namespace ChessGameApplication.Windows
 {
@@ -205,18 +206,18 @@ namespace ChessGameApplication.Windows
         {
             UpdateTurnIndicators();
         }
-        private void UpdateTurnIndicators()
+        private async void UpdateTurnIndicators()
         {
             if (Game.CurrentTurn == PieceColor.Black)
             {
-                TopTurnIndicator.Visibility = Visibility.Visible;
-                BottomTurnIndicator.Visibility = Visibility.Collapsed;
+                FadeIn(TopTurnIndicator);
+                FadeOut(BottomTurnIndicator);
                 TurnTextBlock.Text = "Хід: Чорний";
             }
             else
             {
-                TopTurnIndicator.Visibility = Visibility.Collapsed;
-                BottomTurnIndicator.Visibility = Visibility.Visible;
+                FadeOut(TopTurnIndicator);
+                FadeIn(BottomTurnIndicator);
                 TurnTextBlock.Text = "Хід: Білий";
             }
         }
@@ -225,6 +226,30 @@ namespace ChessGameApplication.Windows
             SettingsManager.Instance.PieceSkinChanged -= OnPieceSkinChanged;
             SettingsManager.Instance.WindowModeChanged -= OnWindowModeChanged;
             base.OnClosed(e);
+        }
+        private void AnimateOpacity(UIElement element, double from, double to, TimeSpan duration)
+        {
+            var animation = new DoubleAnimation
+            {
+                From = from,
+                To = to,
+                Duration = duration,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+
+            element.BeginAnimation(UIElement.OpacityProperty, animation);
+        }
+        public void FadeIn(UIElement element)
+        {
+            element.Visibility = Visibility.Visible;
+            AnimateOpacity(element, 0, 1, TimeSpan.FromSeconds(0.3));
+        }
+        public async void FadeOut(UIElement element)
+        {
+            AnimateOpacity(element, 1, 0, TimeSpan.FromSeconds(0.3));
+
+            await Task.Delay(300);
+            element.Visibility = Visibility.Collapsed;
         }
     }
 }
