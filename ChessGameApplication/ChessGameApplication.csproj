@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\chess-player-one.png" />
+    <None Remove="Images\chess-player-two.png" />
     <None Remove="images\classic\bishop_dark.png" />
     <None Remove="images\classic\bishop_light.png" />
     <None Remove="images\classic\king_dark.png" />
@@ -36,6 +38,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\chess-player-one.png" />
+    <Resource Include="Images\chess-player-two.png" />
     <Resource Include="images\classic\bishop_dark.png" />
     <Resource Include="images\classic\bishop_light.png" />
     <Resource Include="images\classic\king_dark.png" />

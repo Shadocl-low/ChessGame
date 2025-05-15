@@ -120,6 +120,7 @@ namespace ChessGameApplication.Windows
                     {
                         UpdateBoardAfterMove(_selectedPosition.Value, clickedPos);
                         ClearHighlights();
+                        OnTurnChanged();
                         _selectedPosition = null;
                     }
                 }
@@ -200,7 +201,25 @@ namespace ChessGameApplication.Windows
                     break;
             }
         }
-
+        private void OnTurnChanged()
+        {
+            UpdateTurnIndicators();
+        }
+        private void UpdateTurnIndicators()
+        {
+            if (Game.CurrentTurn == PieceColor.Black)
+            {
+                TopTurnIndicator.Visibility = Visibility.Visible;
+                BottomTurnIndicator.Visibility = Visibility.Collapsed;
+                TurnTextBlock.Text = "Хід: Чорний";
+            }
+            else
+            {
+                TopTurnIndicator.Visibility = Visibility.Collapsed;
+                BottomTurnIndicator.Visibility = Visibility.Visible;
+                TurnTextBlock.Text = "Хід: Білий";
+            }
+        }
         protected override void OnClosed(EventArgs e)
         {
             SettingsManager.Instance.PieceSkinChanged -= OnPieceSkinChanged;
