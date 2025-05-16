@@ -5,14 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChessGameApplication.Windows"
         mc:Ignorable="d"
-        Title="Оберіть фігуру" 
+        Title="Оберіть фігуру"
+        Background="{DynamicResource WindowBackgroundBrush}"
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
     <StackPanel Orientation="Horizontal" Margin="10">
-        <Button x:Name="QueenButton" Content="Ферзь" Width="80" Height="80" Margin="5" Click="Queen_Click"/>
-        <Button x:Name="RookButton" Content="Тура" Width="80" Height="80" Margin="5" Click="Rook_Click"/>
-        <Button x:Name="BishopButton" Content="Слон" Width="80" Height="80" Margin="5" Click="Bishop_Click"/>
-        <Button x:Name="KnightButton" Content="Кінь" Width="80" Height="80" Margin="5" Click="Knight_Click"/>
+        <Button x:Name="QueenButton" 
+                Content="Ферзь" 
+                Tag="0"
+                Width="80" Height="80" 
+                Margin="5" 
+                Click="Button_Click"
+                Style="{DynamicResource ButtonStyle}"/>
+        <Button x:Name="RookButton" 
+                Content="Тура" 
+                Tag="1"
+                Width="80" Height="80" 
+                Margin="5" 
+                Click="Button_Click"
+                Style="{DynamicResource ButtonStyle}"/>
+        <Button x:Name="BishopButton" 
+                Content="Слон"  
+                Tag="2"
+                Width="80" Height="80" 
+                Margin="5" 
+                Click="Button_Click"
+                Style="{DynamicResource ButtonStyle}"/>
+        <Button x:Name="KnightButton" 
+                Content="Кінь"  
+                Tag="3"
+                Width="80" Height="80" 
+                Margin="5" 
+                Click="Button_Click"
+                Style="{DynamicResource ButtonStyle}"/>
     </StackPanel>
 </Window>

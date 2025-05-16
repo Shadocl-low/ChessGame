@@ -1,4 +1,5 @@
 ﻿using ChessGameApplication.Game;
+using ChessGameApplication.Game.Figures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,35 +19,17 @@ namespace ChessGameApplication.Windows
     public partial class PromotionDialog : Window
     {
         public PromotionPiece SelectedPiece { get; private set; }
-        private readonly PieceColor _color;
 
-        public PromotionDialog(PieceColor color)
+        public PromotionDialog()
         {
-            _color = color;
             InitializeComponent();
         }
 
-        private void Queen_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            SelectedPiece = PromotionPiece.Queen;
-            DialogResult = true;
-        }
+            var button = sender as Button;
 
-        private void Rook_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedPiece = PromotionPiece.Rook;
-            DialogResult = true;
-        }
-
-        private void Bishop_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedPiece = PromotionPiece.Bishop;
-            DialogResult = true;
-        }
-
-        private void Knight_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedPiece = PromotionPiece.Knight;
+            SelectedPiece = (PromotionPiece)button?.Content!;
             DialogResult = true;
         }
     }

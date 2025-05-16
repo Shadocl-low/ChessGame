@@ -1,5 +1,6 @@
 ﻿using ChessGameApplication.Game.Figures;
 using ChessGameApplication.Game.PieceImageStrategies;
+using ChessGameApplication.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,27 +67,26 @@ namespace ChessGameApplication.Game
             var pawn = Board.GetPieceAt(pawnPosition) as Pawn;
             if (pawn == null) return;
 
-            // Створюємо вікно для вибору фігури
-            var promotionDialog = new PromotionDialog(pawn.Color);
+            var promotionDialog = new PromotionDialog();
             if (promotionDialog.ShowDialog() == true)
             {
                 Piece newPiece;
                 switch (promotionDialog.SelectedPiece)
                 {
                     case PromotionPiece.Queen:
-                        newPiece = new Queen(pawn.Color, pawnPosition, _currentStrategy);
+                        newPiece = new Queen(pawn.Color, pawnPosition);
                         break;
                     case PromotionPiece.Rook:
-                        newPiece = new Rook(pawn.Color, pawnPosition, _currentStrategy);
+                        newPiece = new Rook(pawn.Color, pawnPosition);
                         break;
                     case PromotionPiece.Bishop:
-                        newPiece = new Bishop(pawn.Color, pawnPosition, _currentStrategy);
+                        newPiece = new Bishop(pawn.Color, pawnPosition);
                         break;
                     case PromotionPiece.Knight:
-                        newPiece = new Knight(pawn.Color, pawnPosition, _currentStrategy);
+                        newPiece = new Knight(pawn.Color, pawnPosition);
                         break;
                     default:
-                        newPiece = new Queen(pawn.Color, pawnPosition, _currentStrategy);
+                        newPiece = new Queen(pawn.Color, pawnPosition);
                         break;
                 }
 
