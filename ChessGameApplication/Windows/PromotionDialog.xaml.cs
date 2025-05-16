@@ -29,7 +29,7 @@ namespace ChessGameApplication.Windows
         {
             var button = sender as Button;
 
-            SelectedPiece = (PromotionPiece)button?.Content!;
+            SelectedPiece = (PromotionPiece)Convert.ToUInt32(button?.Tag);
             DialogResult = true;
         }
     }

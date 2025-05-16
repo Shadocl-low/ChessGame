@@ -90,6 +90,7 @@ namespace ChessGameApplication.Game
                         break;
                 }
 
+                newPiece.UpdateImage(_currentStrategy!);
                 Board.PlacePiece(newPiece, pawnPosition);
             }
         }

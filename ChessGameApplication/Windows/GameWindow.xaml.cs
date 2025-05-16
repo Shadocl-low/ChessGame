@@ -196,7 +196,6 @@ namespace ChessGameApplication.Windows
                     WindowState = WindowState.Maximized;
                     WindowStyle = WindowStyle.None;
                     ResizeMode = ResizeMode.NoResize;
-                    Topmost = true;
                     break;
             }
         }
