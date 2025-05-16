@@ -12,6 +12,7 @@ namespace ChessGameApplication.Windows.Manager
         OpenGame,
         OpenSettings,
         Exit,
-        ContinueGame
+        ContinueGame,
+        OpenStats
     }
 }

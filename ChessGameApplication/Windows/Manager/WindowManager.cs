@@ -17,12 +17,14 @@ namespace ChessGameApplication.Windows.Manager
         private readonly GameWindow gameWindow;
         private readonly MainMenuWindow mainMenuWindow;
         private readonly SettingsWindow settingsWindow;
+        private readonly StatsWindow statsWindow;
 
         public WindowManager()
         {
             gameWindow = new GameWindow(this, SettingsJsonOperator.GetImageStrategy());
             mainMenuWindow = new MainMenuWindow(this);
             settingsWindow = new SettingsWindow(this);
+            statsWindow = new StatsWindow(this);
         }
         public async void Notify(WindowActions action)
         {
@@ -44,6 +46,9 @@ namespace ChessGameApplication.Windows.Manager
                 case WindowActions.ContinueGame:
                     gameWindow.LoadGameState(GameJsonOperator.Instance.GameState!);
                     await SwitchWindowAsync(gameWindow);
+                    break;
+                case WindowActions.OpenStats:
+                    await SwitchWindowAsync(statsWindow);
                     break;
                 default:
                     throw new ArgumentException($"Невідома дія: {action}");
