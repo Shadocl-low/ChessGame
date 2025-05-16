@@ -23,8 +23,8 @@ namespace ChessGameApplication.Windows.Manager
         {
             gameWindow = new GameWindow(this, SettingsJsonOperator.GetImageStrategy());
             mainMenuWindow = new MainMenuWindow(this);
-            settingsWindow = new SettingsWindow(this);
             statsWindow = new StatsWindow(this);
+            settingsWindow = new SettingsWindow(this);
         }
         public async void Notify(WindowActions action)
         {
@@ -48,6 +48,7 @@ namespace ChessGameApplication.Windows.Manager
                     await SwitchWindowAsync(gameWindow);
                     break;
                 case WindowActions.OpenStats:
+                    statsWindow.LoadStats();
                     await SwitchWindowAsync(statsWindow);
                     break;
                 default:

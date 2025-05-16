@@ -15,18 +15,20 @@ using System.Windows.Shapes;
 
 namespace ChessGameApplication.Windows
 {
-    public partial class StatsWindow : Window
+    public partial class StatsWindow : Window, IChangeWindowMode
     {
         private readonly IWindowManager _manager;
 
         public StatsWindow(IWindowManager manager)
         {
+            SettingsJsonOperator.Instance.WindowModeChanged += OnWindowModeChanged;
+
             InitializeComponent();
             _manager = manager;
             LoadStats();
         }
 
-        private void LoadStats()
+        public void LoadStats()
         {
             var stats = StatsJsonOperator.Instance.Stats;
             WhiteWinsText.Text = stats.WhiteWins.ToString();
@@ -43,6 +45,35 @@ namespace ChessGameApplication.Windows
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             _manager.Notify(WindowActions.OpenMainMenu);
+        }
+        private void OnWindowModeChanged(string mode)
+        {
+            ChangeWindowMode(mode);
+        }
+        public void ChangeWindowMode(string mode)
+        {
+            switch (mode)
+            {
+                case "Windowed":
+                    WindowState = WindowState.Normal;
+                    WindowStyle = WindowStyle.SingleBorderWindow;
+                    ResizeMode = ResizeMode.CanResizeWithGrip;
+                    Topmost = false;
+                    Width = 1280;
+                    Height = 800;
+                    break;
+                case "Fullscreen":
+                    WindowState = WindowState.Maximized;
+                    WindowStyle = WindowStyle.None;
+                    ResizeMode = ResizeMode.NoResize;
+                    Topmost = true;
+                    break;
+            }
+        }
+        protected override void OnClosed(EventArgs e)
+        {
+            SettingsJsonOperator.Instance.WindowModeChanged -= OnWindowModeChanged;
+            base.OnClosed(e);
         }
     }
 }

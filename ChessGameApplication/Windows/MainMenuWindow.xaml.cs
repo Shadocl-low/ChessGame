@@ -37,7 +37,10 @@ namespace ChessGameApplication.Windows
         {
             Manager.Notify(WindowActions.ContinueGame);
         }
-
+        private void Stats_Click(object sender, RoutedEventArgs e)
+        {
+            Manager.Notify(WindowActions.OpenStats);
+        }
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
             Manager.Notify(WindowActions.OpenSettings);
