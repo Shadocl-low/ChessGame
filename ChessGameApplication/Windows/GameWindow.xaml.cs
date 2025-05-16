@@ -272,6 +272,8 @@ namespace ChessGameApplication.Windows
                     _ => "Гра завершена."
                 };
 
+                StatsJsonOperator.Instance.RecordGameResult(result);
+
                 MessageBox.Show(message, "Гра завершена", MessageBoxButton.OK);
 
                 Manager.Notify(WindowActions.OpenMainMenu);
