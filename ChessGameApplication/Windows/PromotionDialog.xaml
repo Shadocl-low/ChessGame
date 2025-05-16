@@ -1,0 +1,18 @@
+﻿<Window x:Class="ChessGameApplication.Windows.PromotionDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChessGameApplication.Windows"
+        mc:Ignorable="d"
+        Title="Оберіть фігуру" 
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    <StackPanel Orientation="Horizontal" Margin="10">
+        <Button x:Name="QueenButton" Content="Ферзь" Width="80" Height="80" Margin="5" Click="Queen_Click"/>
+        <Button x:Name="RookButton" Content="Тура" Width="80" Height="80" Margin="5" Click="Rook_Click"/>
+        <Button x:Name="BishopButton" Content="Слон" Width="80" Height="80" Margin="5" Click="Bishop_Click"/>
+        <Button x:Name="KnightButton" Content="Кінь" Width="80" Height="80" Margin="5" Click="Knight_Click"/>
+    </StackPanel>
+</Window>

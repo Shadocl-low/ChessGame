@@ -11,41 +11,6 @@
         Background="{DynamicResource WindowBackgroundBrush}"
         ResizeMode="CanResizeWithGrip">
 
-    <Window.Resources>
-        <Style TargetType="Image" x:Key="AnimatedImageStyle">
-            <Style.Triggers>
-                <!-- Анімація при появи (0 → 1) -->
-                <Trigger Property="IsVisible" Value="True">
-                    <Trigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                        From="0" To="1" 
-                                        Duration="0:0:0.3"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.EnterActions>
-                </Trigger>
-
-                <Trigger Property="IsVisible" Value="False">
-                    <Trigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                        From="1" To="0" 
-                                        Duration="0:0:0.3"/>
-                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
-                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.3" 
-                                                   Value="{x:Static Visibility.Collapsed}"/>
-                                </ObjectAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.EnterActions>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
-    
     <Grid Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>

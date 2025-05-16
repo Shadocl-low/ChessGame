@@ -61,6 +61,38 @@ namespace ChessGameApplication.Game
                 Check?.Invoke();
             }
         }
+        private void PromotePawn(Position pawnPosition)
+        {
+            var pawn = Board.GetPieceAt(pawnPosition) as Pawn;
+            if (pawn == null) return;
+
+            // Створюємо вікно для вибору фігури
+            var promotionDialog = new PromotionDialog(pawn.Color);
+            if (promotionDialog.ShowDialog() == true)
+            {
+                Piece newPiece;
+                switch (promotionDialog.SelectedPiece)
+                {
+                    case PromotionPiece.Queen:
+                        newPiece = new Queen(pawn.Color, pawnPosition, _currentStrategy);
+                        break;
+                    case PromotionPiece.Rook:
+                        newPiece = new Rook(pawn.Color, pawnPosition, _currentStrategy);
+                        break;
+                    case PromotionPiece.Bishop:
+                        newPiece = new Bishop(pawn.Color, pawnPosition, _currentStrategy);
+                        break;
+                    case PromotionPiece.Knight:
+                        newPiece = new Knight(pawn.Color, pawnPosition, _currentStrategy);
+                        break;
+                    default:
+                        newPiece = new Queen(pawn.Color, pawnPosition, _currentStrategy);
+                        break;
+                }
+
+                Board.PlacePiece(newPiece, pawnPosition);
+            }
+        }
         public bool TryMakeMove(Position from, Position to)
         {
             if (IsGameOver) return false;
@@ -73,6 +105,11 @@ namespace ChessGameApplication.Game
                 return false;
 
             Board.MovePiece(from, to);
+
+            if (piece is Pawn pawn && pawn.CanPromote())
+            {
+                PromotePawn(pawn.Position);
+            }
 
             CheckGameEndConditions();
 
