@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 
 namespace ChessGameApplication.Windows.Manager
 {
@@ -22,40 +24,83 @@ namespace ChessGameApplication.Windows.Manager
             mainMenuWindow = new MainMenuWindow(this);
             settingsWindow = new SettingsWindow(this);
         }
-        public void Notify(WindowActions action)
+        public async void Notify(WindowActions action)
         {
             switch (action)
             {
                 case WindowActions.OpenMainMenu:
-                    SwitchWindow(mainMenuWindow);
+                    await SwitchWindowAsync(mainMenuWindow);
                     break;
                 case WindowActions.OpenGame:
                     gameWindow.StartNewGame();
-                    SwitchWindow(gameWindow);
+                    await SwitchWindowAsync(gameWindow);
                     break;
                 case WindowActions.OpenSettings:
-                    SwitchWindow(settingsWindow);
+                    await SwitchWindowAsync(settingsWindow);
                     break;
                 case WindowActions.Exit:
                     Application.Current.Shutdown();
                     break;
                 case WindowActions.ContinueGame:
                     gameWindow.LoadGameState(GameJsonOperator.Instance.GameState!);
-                    SwitchWindow(gameWindow);
+                    await SwitchWindowAsync(gameWindow);
                     break;
                 default:
                     throw new ArgumentException($"Невідома дія: {action}");
             }
         }
+        private async Task FadeOut(Window window)
+        {
+            var duration = TimeSpan.FromSeconds(0.3);
+            var animation = new DoubleAnimation
+            {
+                From = 1.0,
+                To = 0.0,
+                Duration = duration
+            };
 
-        private void SwitchWindow(Window newWindow)
+            window.BeginAnimation(UIElement.OpacityProperty, animation);
+            await Task.Delay(duration);
+        }
+
+        private async Task FadeIn(Window window)
+        {
+            var duration = TimeSpan.FromSeconds(0.3);
+            var animation = new DoubleAnimation
+            {
+                From = 0.0,
+                To = 1.0,
+                Duration = duration
+            };
+
+            window.BeginAnimation(UIElement.OpacityProperty, animation);
+            await Task.Delay(duration);
+        }
+        private async Task SwitchWindowAsync(Window newWindow)
         {
             if (CurrentWindow == newWindow)
                 return;
 
-            CurrentWindow?.Hide();
+            if (CurrentWindow is not null)
+            {
+                CurrentWindow.Effect = new BlurEffect { Radius = 5 };
+                await FadeOut(CurrentWindow);
+            }
+
+            newWindow.Effect = new BlurEffect { Radius = 5 };
+            newWindow.Opacity = 0;
+            newWindow.Show();
+            await FadeIn(newWindow);
+            newWindow.Effect = null;
+
+            if (CurrentWindow is not null)
+            {
+                CurrentWindow.Hide();
+                CurrentWindow.Effect = null;
+            }
+
+
             CurrentWindow = newWindow;
-            CurrentWindow.Show();
         }
     }
 }
