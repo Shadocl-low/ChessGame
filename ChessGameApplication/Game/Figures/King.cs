@@ -27,7 +27,55 @@ namespace ChessGameApplication.Game.Figures
                     moves.Add(pos);
             }
 
+            if (!HasMoved)
+            {
+                AddCastlingMoves(board, moves);
+            }
+
             return moves;
+        }
+        private void AddCastlingMoves(Board board, List<Position> moves)
+        {
+            if (CanCastleKingside(board))
+            {
+                moves.Add(new Position(Position.Row + 2, Position.Column));
+            }
+
+            if (CanCastleQueenside(board))
+            {
+                moves.Add(new Position(Position.Row - 2, Position.Column));
+            }
+        }
+
+        private bool CanCastleKingside(Board board)
+        {
+            if (HasMoved) return false;
+
+            var rookPos = new Position(7, Position.Column);
+            var rook = board.GetPieceAt(rookPos) as Rook;
+
+            return rook != null && !rook.HasMoved &&
+                   board.IsEmpty(new Position(5, Position.Column)) &&
+                   board.IsEmpty(new Position(6, Position.Column)) &&
+                   !board.IsSquareUnderAttack(Position, Color) &&
+                   !board.IsSquareUnderAttack(new Position(5, Position.Column), Color) &&
+                   !board.IsSquareUnderAttack(new Position(6, Position.Column), Color);
+        }
+
+        private bool CanCastleQueenside(Board board)
+        {
+            if (HasMoved) return false;
+
+            var rookPos = new Position(0, Position.Row);
+            var rook = board.GetPieceAt(rookPos) as Rook;
+
+            return rook != null && !rook.HasMoved &&
+                   board.IsEmpty(new Position(1, Position.Column)) &&
+                   board.IsEmpty(new Position(2, Position.Column)) &&
+                   board.IsEmpty(new Position(3, Position.Column)) &&
+                   !board.IsSquareUnderAttack(Position, Color) &&
+                   !board.IsSquareUnderAttack(new Position(3, Position.Column), Color) &&
+                   !board.IsSquareUnderAttack(new Position(4, Position.Column), Color);
         }
     }
 }

@@ -14,6 +14,7 @@ namespace ChessGameApplication.Game.Figures
         public PieceColor Color { get; }
         public Position Position { get; set; }
         public ImageSource? Image { get; protected set; }
+        public bool HasMoved { get; protected set; }
 
         protected Piece(PieceColor color, Position position)
         {

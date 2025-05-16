@@ -121,7 +121,7 @@ namespace ChessGameApplication.Game
             }
             throw new Exception("Король не знайдений");
         }
-        private bool IsSquareUnderAttack(Position position, PieceColor defenderColor)
+        public bool IsSquareUnderAttack(Position position, PieceColor defenderColor)
         {
             for (int row = 0; row < 8; row++)
             {
