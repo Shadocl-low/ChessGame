@@ -42,6 +42,12 @@ namespace ChessGameApplication.Windows
             InitializeComponent();
             RenderChessBoard();
         }
+        public void StartNewGame()
+        {
+            Game.StartNewGame();
+            UpdateTurnIndicators();
+            RenderChessBoard();
+        }
         private void RenderChessBoard()
         {
             ChessBoard.Children.Clear();
@@ -196,6 +202,7 @@ namespace ChessGameApplication.Windows
                     WindowState = WindowState.Maximized;
                     WindowStyle = WindowStyle.None;
                     ResizeMode = ResizeMode.NoResize;
+                    Topmost = true;
                     break;
             }
         }

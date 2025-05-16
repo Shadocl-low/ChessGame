@@ -29,6 +29,7 @@ namespace ChessGameApplication.Windows.Manager
                     SwitchWindow(mainMenuWindow);
                     break;
                 case WindowActions.OpenGame:
+                    gameWindow.StartNewGame();
                     SwitchWindow(gameWindow);
                     break;
                 case WindowActions.OpenSettings:

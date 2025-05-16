@@ -13,9 +13,10 @@ namespace ChessGameApplication.Game
     public class Board
     {
         private readonly Piece?[,] Squares = new Piece?[8, 8];
-        private IPieceImageStrategy? ImageStrategy;
         public void Initialize()
         {
+            Array.Clear(Squares, 0, Squares.Length);
+
             var startingPieces = new (Type pieceType, int x, int y)[]
             {
                 (typeof(Rook), 0, 0), (typeof(Knight), 1, 0), (typeof(Bishop), 2, 0),
@@ -34,10 +35,6 @@ namespace ChessGameApplication.Game
                 PlacePiece(new Pawn(PieceColor.Black, new Position(x, 1)), new Position(x, 1));
                 PlacePiece(new Pawn(PieceColor.White, new Position(x, 6)), new Position(x, 6));
             }
-        }
-        public void SetStrategy(IPieceImageStrategy imageStrategy)
-        {
-            ImageStrategy = imageStrategy;
         }
         public void PlacePiece(Piece? piece, Position position)
         {

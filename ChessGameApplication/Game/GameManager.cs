@@ -24,8 +24,6 @@ namespace ChessGameApplication.Game
             _currentStrategy = imageStrategy;
 
             Board = new Board();
-
-            StartNewGame();
         }
         public void StartNewGame()
         {
