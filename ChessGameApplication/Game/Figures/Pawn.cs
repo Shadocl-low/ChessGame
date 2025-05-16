@@ -35,5 +35,10 @@ namespace ChessGameApplication.Game.Figures
 
             return moves;
         }
+        public bool CanPromote()
+        {
+            return (Color == PieceColor.White && Position.Row == 0) ||
+                   (Color == PieceColor.Black && Position.Row == 7);
+        }
     }
 }
