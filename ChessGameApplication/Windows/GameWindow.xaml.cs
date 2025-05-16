@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using ChessGameApplication.Game.PieceImageStrategies;
 using System.Windows.Media.Animation;
+using ChessGameApplication.JsonModels;
 
 namespace ChessGameApplication.Windows
 {
@@ -121,7 +122,10 @@ namespace ChessGameApplication.Windows
                 e.Handled = true;
             }
         }
-        private void SaveGame_Click(object sender, RoutedEventArgs e) { }
+        private void SaveGame_Click(object sender, RoutedEventArgs e) 
+        {
+            GameJsonOperator.Instance.Save(Game.CurrentTurn, _ckeckedState, Game.GetAllPieces());
+        }
         private void BackToMenu_Click(object sender, RoutedEventArgs e)
         {
             Manager.Notify(WindowActions.OpenMainMenu);
@@ -272,6 +276,19 @@ namespace ChessGameApplication.Windows
 
                 Manager.Notify(WindowActions.OpenMainMenu);
             });
+        }
+        public void LoadGameState(GameState gameState)
+        {
+            Game.LoadGameState(gameState);
+            _ckeckedState = gameState.IsCheck;
+
+            RenderChessBoard();
+            UpdateTurnIndicators();
+
+            if (_ckeckedState)
+            {
+                HighlightCheck();
+            }
         }
     }
 }

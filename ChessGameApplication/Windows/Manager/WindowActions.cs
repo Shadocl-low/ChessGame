@@ -11,6 +11,7 @@ namespace ChessGameApplication.Windows.Manager
         OpenMainMenu,
         OpenGame,
         OpenSettings,
-        Exit
+        Exit,
+        ContinueGame
     }
 }

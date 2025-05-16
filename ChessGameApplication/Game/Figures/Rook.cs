@@ -10,6 +10,7 @@ namespace ChessGameApplication.Game.Figures
     public class Rook : Piece
     {
         public Rook(PieceColor color, Position position) : base(color, position) { }
+        public Rook(PieceColor color, Position position, bool hasMoved) : base(color, position, hasMoved) { }
 
         public override IEnumerable<Position> GetAvailableMoves(Board board)
         {

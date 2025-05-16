@@ -10,6 +10,7 @@ namespace ChessGameApplication.Game.Figures
     public class Pawn : Piece
     {
         public Pawn(PieceColor color, Position position) : base(color, position) { }
+        public Pawn(PieceColor color, Position position, bool hasMoved) : base(color, position, hasMoved) { }
 
         public override List<Position> GetAvailableMoves(Board board)
         {

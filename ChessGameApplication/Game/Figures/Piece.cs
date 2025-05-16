@@ -22,6 +22,12 @@ namespace ChessGameApplication.Game.Figures
             Position = position;
             HasMoved = false;
         }
+        protected Piece(PieceColor color, Position position, bool hasMoved)
+        {
+            Color = color;
+            Position = position;
+            HasMoved = hasMoved;
+        }
         public abstract IEnumerable<Position> GetAvailableMoves(Board board);
         public void UpdateImage(IPieceImageStrategy strategy)
         {

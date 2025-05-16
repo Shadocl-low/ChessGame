@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChessGameApplication.JsonModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,6 +38,10 @@ namespace ChessGameApplication.Windows.Manager
                     break;
                 case WindowActions.Exit:
                     Application.Current.Shutdown();
+                    break;
+                case WindowActions.ContinueGame:
+                    gameWindow.LoadGameState(GameJsonOperator.Instance.GameState!);
+                    SwitchWindow(gameWindow);
                     break;
                 default:
                     throw new ArgumentException($"Невідома дія: {action}");

@@ -1,5 +1,6 @@
 ﻿using ChessGameApplication.Game.Figures;
 using ChessGameApplication.Game.PieceImageStrategies;
+using ChessGameApplication.JsonModels;
 using ChessGameApplication.Windows;
 using System;
 using System.Collections.Generic;
@@ -172,6 +173,37 @@ namespace ChessGameApplication.Game
             }
 
             return allowedMoves;
+        }
+        public void LoadGameState(GameState gameState)
+        {
+            Board.ClearBoard();
+
+            CurrentTurn = gameState.CurrentTurn;
+
+            foreach (var pieceModel in gameState.Pieces)
+            {
+                Piece? piece = pieceModel.Type switch
+                {
+                    nameof(Pawn) => new Pawn(pieceModel.Color, new Position(pieceModel.Row, pieceModel.Column), pieceModel.HasMoved),
+                    nameof(Rook) => new Rook(pieceModel.Color, new Position(pieceModel.Row, pieceModel.Column), pieceModel.HasMoved),
+                    nameof(Knight) => new Knight(pieceModel.Color, new Position(pieceModel.Row, pieceModel.Column), pieceModel.HasMoved),
+                    nameof(Bishop) => new Bishop(pieceModel.Color, new Position(pieceModel.Row, pieceModel.Column), pieceModel.HasMoved),
+                    nameof(Queen) => new Queen(pieceModel.Color, new Position(pieceModel.Row, pieceModel.Column), pieceModel.HasMoved),
+                    nameof(King) => new King(pieceModel.Color, new Position(pieceModel.Row, pieceModel.Column), pieceModel.HasMoved),
+                    _ => null
+                };
+
+                if (piece != null)
+                {
+                    Board.PlacePiece(piece, piece.Position);
+                }
+            }
+            UpdateImageStrategy(_currentStrategy!);
+        }
+
+        public IEnumerable<Piece> GetAllPieces()
+        {
+            return Board.GetAllPieces();
         }
     }
 }

@@ -15,7 +15,7 @@ namespace ChessGameApplication.Game
         private readonly Piece?[,] Squares = new Piece?[8, 8];
         public void Initialize()
         {
-            Array.Clear(Squares, 0, Squares.Length);
+            ClearBoard();
 
             var startingPieces = new (Type pieceType, int x, int y)[]
             {
@@ -35,6 +35,10 @@ namespace ChessGameApplication.Game
                 PlacePiece(new Pawn(PieceColor.Black, new Position(x, 1)), new Position(x, 1));
                 PlacePiece(new Pawn(PieceColor.White, new Position(x, 6)), new Position(x, 6));
             }
+        }
+        public void ClearBoard()
+        {
+            Array.Clear(Squares, 0, Squares.Length);
         }
         public void PlacePiece(Piece? piece, Position position)
         {

@@ -35,7 +35,7 @@ namespace ChessGameApplication.Windows
 
         private void ContinueGame_Click(object sender, RoutedEventArgs e)
         {
-            
+            Manager.Notify(WindowActions.ContinueGame);
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)
