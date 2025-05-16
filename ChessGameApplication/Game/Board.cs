@@ -49,15 +49,54 @@ namespace ChessGameApplication.Game
         {
             return Squares[position.Row, position.Column];
         }
+        private void HandleCastling(King king, Position from, Position to)
+        {
+            if (to.Row > from.Row)
+            {
+                Squares[to.Row, to.Column] = king;
+                Squares[from.Row, from.Column] = null;
+                king.Position = to;
 
+                var rookFrom = new Position(7, from.Column);
+                var rookTo = new Position(5, from.Column);
+                var rook = GetPieceAt(rookFrom);
+                Squares[rookTo.Row, rookTo.Column] = rook;
+                Squares[rookFrom.Row, rookFrom.Column] = null;
+                rook.Position = rookTo;
+                rook.HasMoved = true;
+            }
+            else
+            {
+                Squares[to.Row, to.Column] = king;
+                Squares[from.Row, from.Column] = null;
+                king.Position = to;
+
+                var rookFrom = new Position(0, from.Column);
+                var rookTo = new Position(3, from.Column);
+                var rook = GetPieceAt(rookFrom);
+                Squares[rookTo.Row, rookTo.Column] = rook;
+                Squares[rookFrom.Row, rookFrom.Column] = null;
+                rook.Position = rookTo;
+                rook.HasMoved = true;
+            }
+
+            king.HasMoved = true;
+        }
         public void MovePiece(Position from, Position to)
         {
             var piece = GetPieceAt(from);
             if (piece == null) return;
 
+            if (piece is King king && !piece.HasMoved && Math.Abs(from.Row - to.Row) == 2)
+            {
+                HandleCastling(king, from, to);
+                return;
+            }
+
             Squares[to.Row, to.Column] = piece;
             Squares[from.Row, from.Column] = null;
             piece.Position = to;
+            piece.HasMoved = true;
         }
         public bool IsEmpty(Position pos)
         {
@@ -145,14 +184,23 @@ namespace ChessGameApplication.Game
             Position kingPosition = FindKingPosition(kingColor);
             return IsSquareUnderAttack(kingPosition, kingColor);
         }
+        public void MovePieceBeInCheck(Position from, Position to)
+        {
+            var piece = GetPieceAt(from);
+            if (piece == null) return;
+
+            Squares[to.Row, to.Column] = piece;
+            Squares[from.Row, from.Column] = null;
+            piece.Position = to;
+        }
         public bool WouldBeInCheckAfterMove(Position from, Position to, PieceColor movingColor)
         {
             var originalPiece = GetPieceAt(to);
-            MovePiece(from, to);
+            MovePieceBeInCheck(from, to);
 
             bool isInCheck = IsInCheck(movingColor);
 
-            MovePiece(to, from);
+            MovePieceBeInCheck(to, from);
             PlacePiece(originalPiece, to);
 
             return isInCheck;

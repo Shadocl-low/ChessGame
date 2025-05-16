@@ -81,29 +81,6 @@ namespace ChessGameApplication.Windows
                 }
             }
         }
-        private void UpdateBoardAfterMove(Position from, Position to)
-        {
-            if (positionToCellMap.TryGetValue(from, out var fromCell))
-            {
-                fromCell.Child = null;
-            }
-
-            if (positionToCellMap.TryGetValue(to, out var toCell))
-            {
-                var piece = Game.GetPiece(to);
-                var image = new Image
-                {
-                    Source = piece?.Image,
-                    Stretch = Stretch.Uniform,
-                    Width = 40,
-                    Height = 40,
-                    Tag = to
-                };
-                toCell.Child = piece != null
-                    ? image
-                    : null;
-            }
-        }
 
         private void OnCellClick(object sender, MouseButtonEventArgs e)
         {
@@ -122,7 +99,7 @@ namespace ChessGameApplication.Windows
 
                     else if (Game.TryMakeMove(_selectedPosition.Value, clickedPos))
                     {
-                        UpdateBoardAfterMove(_selectedPosition.Value, clickedPos);
+                        RenderChessBoard();
                         ClearHighlights();
                         OnTurnChanged();
                         _selectedPosition = null;

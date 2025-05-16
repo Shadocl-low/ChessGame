@@ -56,26 +56,20 @@ namespace ChessGameApplication.Game.Figures
 
             return rook != null && !rook.HasMoved &&
                    board.IsEmpty(new Position(5, Position.Column)) &&
-                   board.IsEmpty(new Position(6, Position.Column)) &&
-                   !board.IsSquareUnderAttack(Position, Color) &&
-                   !board.IsSquareUnderAttack(new Position(5, Position.Column), Color) &&
-                   !board.IsSquareUnderAttack(new Position(6, Position.Column), Color);
+                   board.IsEmpty(new Position(6, Position.Column));
         }
 
         private bool CanCastleQueenside(Board board)
         {
             if (HasMoved) return false;
 
-            var rookPos = new Position(0, Position.Row);
+            var rookPos = new Position(0, Position.Column);
             var rook = board.GetPieceAt(rookPos) as Rook;
 
             return rook != null && !rook.HasMoved &&
                    board.IsEmpty(new Position(1, Position.Column)) &&
                    board.IsEmpty(new Position(2, Position.Column)) &&
-                   board.IsEmpty(new Position(3, Position.Column)) &&
-                   !board.IsSquareUnderAttack(Position, Color) &&
-                   !board.IsSquareUnderAttack(new Position(3, Position.Column), Color) &&
-                   !board.IsSquareUnderAttack(new Position(4, Position.Column), Color);
+                   board.IsEmpty(new Position(3, Position.Column));
         }
     }
 }
