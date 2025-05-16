@@ -32,8 +32,8 @@ namespace ChessGameApplication.Windows
         private readonly GameManager Game;
         public GameWindow(IWindowManager manager, IPieceImageStrategy imageStrategy)
         {
-            SettingsManager.Instance.PieceSkinChanged += OnPieceSkinChanged;
-            SettingsManager.Instance.WindowModeChanged += OnWindowModeChanged;
+            SettingsJsonOperator.Instance.PieceSkinChanged += OnPieceSkinChanged;
+            SettingsJsonOperator.Instance.WindowModeChanged += OnWindowModeChanged;
 
             Manager = manager;
             Game = new GameManager(imageStrategy);
@@ -231,8 +231,8 @@ namespace ChessGameApplication.Windows
         }
         protected override void OnClosed(EventArgs e)
         {
-            SettingsManager.Instance.PieceSkinChanged -= OnPieceSkinChanged;
-            SettingsManager.Instance.WindowModeChanged -= OnWindowModeChanged;
+            SettingsJsonOperator.Instance.PieceSkinChanged -= OnPieceSkinChanged;
+            SettingsJsonOperator.Instance.WindowModeChanged -= OnWindowModeChanged;
             base.OnClosed(e);
         }
         private void AnimateOpacity(UIElement element, double from, double to, TimeSpan duration)

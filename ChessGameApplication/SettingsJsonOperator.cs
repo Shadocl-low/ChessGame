@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ChessGameApplication
 {
-    public class SettingsManager
+    public class SettingsJsonOperator
     {
         private static readonly string SettingsFilePath = "appsettings.json";
 
@@ -21,10 +21,10 @@ namespace ChessGameApplication
         public AppSettings? Settings { get; private set; }
         private readonly JsonSerializerOptions jsonSerializerOptions = new() { WriteIndented = true };
 
-        private static SettingsManager? _instance;
-        public static SettingsManager Instance => _instance ??= new SettingsManager();
+        private static SettingsJsonOperator? _instance;
+        public static SettingsJsonOperator Instance => _instance ??= new SettingsJsonOperator();
 
-        private SettingsManager() => Load();
+        private SettingsJsonOperator() => Load();
 
         public void Load()
         {

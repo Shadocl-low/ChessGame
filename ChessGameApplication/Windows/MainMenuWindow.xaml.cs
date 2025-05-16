@@ -22,7 +22,7 @@ namespace ChessGameApplication.Windows
         private readonly IWindowManager Manager;
         public MainMenuWindow(IWindowManager manager)
         {
-            SettingsManager.Instance.WindowModeChanged += OnWindowModeChanged;
+            SettingsJsonOperator.Instance.WindowModeChanged += OnWindowModeChanged;
 
             Manager = manager;
 
@@ -74,7 +74,7 @@ namespace ChessGameApplication.Windows
 
         protected override void OnClosed(EventArgs e)
         {
-            SettingsManager.Instance.WindowModeChanged -= OnWindowModeChanged;
+            SettingsJsonOperator.Instance.WindowModeChanged -= OnWindowModeChanged;
             base.OnClosed(e);
         }
     }

@@ -26,10 +26,10 @@ namespace ChessGameApplication.Windows
         private bool _isInitializing = true;
         public SettingsWindow(IWindowManager manager)
         {
-            SettingsManager.Instance.WindowModeChanged += OnWindowModeChanged;
+            SettingsJsonOperator.Instance.WindowModeChanged += OnWindowModeChanged;
 
             Manager = manager;
-            Settings = SettingsManager.Instance.Settings!;
+            Settings = SettingsJsonOperator.Instance.Settings!;
 
             InitializeComponent();
 
@@ -84,7 +84,7 @@ namespace ChessGameApplication.Windows
             if (sender is not RadioButton radio || radio.Tag == null) return;
 
             string themeTag = radio.Tag.ToString()!;
-            SettingsManager.SetTheme(themeTag);
+            SettingsJsonOperator.SetTheme(themeTag);
             ApplyTheme();
         }
 
@@ -104,7 +104,7 @@ namespace ChessGameApplication.Windows
             if (WindowModeComboBox.SelectedItem is ComboBoxItem selectedItem && selectedItem.Tag != null)
             {
                 string modeTag = selectedItem.Tag.ToString()!;
-                SettingsManager.SetWindowMode(modeTag);
+                SettingsJsonOperator.SetWindowMode(modeTag);
             }
         }
 
@@ -124,7 +124,7 @@ namespace ChessGameApplication.Windows
             if (PieceSkinComboBox.SelectedItem is ComboBoxItem selectedItem && selectedItem.Tag != null)
             {
                 string skinTag = selectedItem.Tag.ToString()!;
-                SettingsManager.SetPieceSkin(skinTag);
+                SettingsJsonOperator.SetPieceSkin(skinTag);
             }
         }
         private void OnWindowModeChanged(string mode)
@@ -154,7 +154,7 @@ namespace ChessGameApplication.Windows
 
         protected override void OnClosed(EventArgs e)
         {
-            SettingsManager.Instance.WindowModeChanged -= OnWindowModeChanged;
+            SettingsJsonOperator.Instance.WindowModeChanged -= OnWindowModeChanged;
             base.OnClosed(e);
         }
         private void BackToMenu_Click(object sender, RoutedEventArgs e)
