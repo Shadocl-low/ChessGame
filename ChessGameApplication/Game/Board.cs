@@ -42,7 +42,7 @@ namespace ChessGameApplication.Game
         public void PlacePiece(Piece? piece, Position position)
         {
             Squares[position.Row, position.Column] = piece;
-            piece.Position = position;
+            if (piece != null) piece.Position = position;
         }
 
         public Piece? GetPieceAt(Position position)
@@ -106,7 +106,7 @@ namespace ChessGameApplication.Game
                          .Where(piece => piece != null)
                          .Select(piece => piece!);
         }
-        private Position FindKingPosition(PieceColor color)
+        public Position FindKingPosition(PieceColor color)
         {
             for (int row = 0; row < 8; row++)
             {

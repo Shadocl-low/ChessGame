@@ -10,7 +10,8 @@ namespace ChessGameApplication.Game
 {
     public class GameManager
     {
-        public event Action<GameEndResult> GameEnded;
+        public event Action<GameEndResult>? GameEnded;
+        public event Action? Check;
 
         public Board Board { get; private set; }
         public PieceColor CurrentTurn { get; private set; } = PieceColor.White;
@@ -57,7 +58,7 @@ namespace ChessGameApplication.Game
             }
             else if (Board.IsInCheck(opponentColor))
             {
-                
+                Check?.Invoke();
             }
         }
         public bool TryMakeMove(Position from, Position to)
@@ -113,6 +114,10 @@ namespace ChessGameApplication.Game
             {
                 piece.UpdateImage(_currentStrategy);
             }
+        }
+        public Position FindKingPosition(PieceColor color)
+        {
+            return Board.FindKingPosition(color);
         }
     }
 }

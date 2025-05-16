@@ -25,6 +25,7 @@ namespace ChessGameApplication.Windows
         private readonly SolidColorBrush darkCell = new SolidColorBrush(Color.FromRgb(181, 136, 99));
         private Dictionary<Position, Border> positionToCellMap = new();
         private Position? _selectedPosition;
+        private bool _ckeckedState = false;
 
         private readonly IWindowManager Manager;
         private readonly GameManager Game;
@@ -36,6 +37,7 @@ namespace ChessGameApplication.Windows
             Manager = manager;
             Game = new GameManager(imageStrategy);
             Game.GameEnded += OnGameEnded;
+            Game.Check += HighlightCheck;
 
             InitializeComponent();
             RenderChessBoard();
@@ -124,6 +126,7 @@ namespace ChessGameApplication.Windows
                         ClearHighlights();
                         OnTurnChanged();
                         _selectedPosition = null;
+                        _ckeckedState = false;
                     }
                 }
                 else if (clickedPiece != null && clickedPiece.Color == Game.CurrentTurn)
@@ -159,6 +162,21 @@ namespace ChessGameApplication.Windows
                 }
             }
         }
+        private void HighlightCheck()
+        {
+            _ckeckedState = true;
+
+            var opponentColor = Game.CurrentTurn == PieceColor.Black ? PieceColor.Black : PieceColor.White;
+
+            var kingPosition = Game.Board.FindKingPosition(opponentColor);
+            if (positionToCellMap.TryGetValue(kingPosition, out var cell))
+            {
+                cell.Background = new SolidColorBrush(Color.FromArgb(255, 255, 50, 50));
+
+                cell.BorderBrush = Brushes.Red;
+                cell.BorderThickness = new Thickness(6);
+            }
+        }
         private void ClearHighlights()
         {
             foreach (var cell in positionToCellMap.Values)
@@ -166,6 +184,8 @@ namespace ChessGameApplication.Windows
                 cell.Background = GetOriginalCellColor((Position)cell.Tag);
                 cell.BorderThickness = new Thickness(0.5);
             }
+
+            if (_ckeckedState) HighlightCheck();
         }
         private Brush GetOriginalCellColor(Position pos)
         {
@@ -256,16 +276,19 @@ namespace ChessGameApplication.Windows
             color == PieceColor.White ? "білий" : "чорний";
         private void OnGameEnded(GameEndResult result)
         {
-            string message = result.Reason switch
+            Dispatcher.Invoke(() =>
             {
-                EndReason.Checkmate => $"Мат! Переміг {GetColorName(result.Winner!.Value)}.",
-                EndReason.Stalemate => "Пат - нічия!",
-                _ => "Гра завершена."
-            };
+                string message = result.Reason switch
+                {
+                    EndReason.Checkmate => $"Мат! Переміг {GetColorName(result.Winner!.Value)}.",
+                    EndReason.Stalemate => "Пат - нічия!",
+                    _ => "Гра завершена."
+                };
 
-            MessageBox.Show(message, "Гра завершена", MessageBoxButton.OK);
+                MessageBox.Show(message, "Гра завершена", MessageBoxButton.OK);
 
-            Manager.Notify(WindowActions.OpenMainMenu);
+                Manager.Notify(WindowActions.OpenMainMenu);
+            });
         }
     }
 }
