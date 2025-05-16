@@ -119,5 +119,23 @@ namespace ChessGameApplication.Game
         {
             return Board.FindKingPosition(color);
         }
+        public List<Position> GetAllowedMoves(Position from)
+        {
+            var piece = Board.GetPieceAt(from);
+            if (piece == null) return new List<Position>();
+
+            var allMoves = piece.GetAvailableMoves(Board).ToList();
+            var allowedMoves = new List<Position>();
+
+            foreach (var move in allMoves)
+            {
+                if (!Board.WouldBeInCheckAfterMove(from, move, piece.Color))
+                {
+                    allowedMoves.Add(move);
+                }
+            }
+
+            return allowedMoves;
+        }
     }
 }

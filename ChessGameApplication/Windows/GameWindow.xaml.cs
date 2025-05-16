@@ -145,7 +145,7 @@ namespace ChessGameApplication.Windows
         }
         private void HighlightCells(Piece piece)
         {
-            var positions = Game.GetPieceMoves(piece);
+            var positions = Game.GetAllowedMoves(piece.Position);
             var cellBgFree = new SolidColorBrush(Color.FromArgb(100, 50, 200, 50));
             var cellBgEnemy = new SolidColorBrush(Color.FromArgb(100, 200, 100, 50));
 
