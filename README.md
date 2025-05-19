@@ -1,6 +1,8 @@
 ### Пилявський Олександр Іванович
 ### vt231_poi@student.ztu.edu.ua
 
+![Row's of code](C:\Users\1\Downloads\SD\ChessGame\Images\code.png)
+
 # Гра шахи
 
 ### Мета проєкту
