@@ -9,7 +9,8 @@
         Width="1280" Height="800"
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource WindowBackgroundBrush}"
-        ResizeMode="CanResizeWithGrip">
+        ResizeMode="CanResizeWithGrip"
+        Topmost="False">
 
     <Grid Margin="20">
         <Grid.ColumnDefinitions>

@@ -33,5 +33,9 @@ namespace ChessGameApplication.Game.Figures
         {
             Image = strategy.GetImageForPiece(this);
         }
+        public void SetPosition(Position pos)
+        {
+            Position = pos;
+        }
     }
 }
