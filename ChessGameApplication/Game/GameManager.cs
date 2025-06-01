@@ -69,30 +69,13 @@ namespace ChessGameApplication.Game
             var promotionDialog = new PromotionDialog();
             if (promotionDialog.ShowDialog() == true)
             {
-                Piece newPiece;
-                switch (promotionDialog.SelectedPiece)
-                {
-                    case PromotionPiece.Queen:
-                        newPiece = new Queen(pawn.Color, pawnPosition);
-                        break;
-                    case PromotionPiece.Rook:
-                        newPiece = new Rook(pawn.Color, pawnPosition);
-                        break;
-                    case PromotionPiece.Bishop:
-                        newPiece = new Bishop(pawn.Color, pawnPosition);
-                        break;
-                    case PromotionPiece.Knight:
-                        newPiece = new Knight(pawn.Color, pawnPosition);
-                        break;
-                    default:
-                        newPiece = new Queen(pawn.Color, pawnPosition);
-                        break;
-                }
+                var newPiece = PieceFactory.Create(promotionDialog.SelectedPiece, pawn.Color, pawnPosition);
 
                 newPiece.UpdateImage(_currentStrategy!);
                 Board.PlacePiece(newPiece, pawnPosition);
             }
         }
+
         public bool TryMakeMove(Position from, Position to)
         {
             if (IsGameOver) return false;
@@ -122,15 +105,9 @@ namespace ChessGameApplication.Game
         }
         private void ChangeTurn()
         {
-            if (CurrentTurn == PieceColor.White)
-            {
-                CurrentTurn = PieceColor.Black;
-            }
-            else
-            {
-                CurrentTurn = PieceColor.White;
-            }
+            CurrentTurn = CurrentTurn == PieceColor.White ? PieceColor.Black : PieceColor.White;
         }
+
         public Piece? GetPiece(Position position)
         {
             return Board.GetPieceAt(position);
@@ -177,29 +154,22 @@ namespace ChessGameApplication.Game
         public void LoadGameState(GameState gameState)
         {
             Board.ClearBoard();
-
             CurrentTurn = gameState.CurrentTurn;
 
             foreach (var pieceModel in gameState.Pieces)
             {
-                Piece? piece = pieceModel.Type switch
-                {
-                    nameof(Pawn) => new Pawn(pieceModel.Color, new Position(pieceModel.Row, pieceModel.Column), pieceModel.HasMoved),
-                    nameof(Rook) => new Rook(pieceModel.Color, new Position(pieceModel.Row, pieceModel.Column), pieceModel.HasMoved),
-                    nameof(Knight) => new Knight(pieceModel.Color, new Position(pieceModel.Row, pieceModel.Column), pieceModel.HasMoved),
-                    nameof(Bishop) => new Bishop(pieceModel.Color, new Position(pieceModel.Row, pieceModel.Column), pieceModel.HasMoved),
-                    nameof(Queen) => new Queen(pieceModel.Color, new Position(pieceModel.Row, pieceModel.Column), pieceModel.HasMoved),
-                    nameof(King) => new King(pieceModel.Color, new Position(pieceModel.Row, pieceModel.Column), pieceModel.HasMoved),
-                    _ => null
-                };
+                var position = new Position(pieceModel.Row, pieceModel.Column);
+                var piece = PieceFactory.Create(pieceModel.Type, pieceModel.Color, position, pieceModel.HasMoved);
 
                 if (piece != null)
                 {
                     Board.PlacePiece(piece, piece.Position);
                 }
             }
+
             UpdateImageStrategy(_currentStrategy!);
         }
+
 
         public IEnumerable<Piece> GetAllPieces()
         {
