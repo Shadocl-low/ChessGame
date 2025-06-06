@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using ChessGameApplication.Game.BoardServices;
 
 namespace ChessGameApplication.Game
 {
@@ -15,103 +16,61 @@ namespace ChessGameApplication.Game
         private const int BoardSize = 8;
         private readonly Piece?[,] Squares = new Piece?[BoardSize, BoardSize];
 
+        private readonly PiecePlacementService _piecePlacementService;
+        private readonly MovementService _movementService;
+        private readonly CastlingService _castlingService;
+        private readonly AttackDetectionService _attackDetectionService;
+        private readonly GameStateService _gameStateService;
+        private readonly BoardValidationService _boardValidationService;
+
+        public Board()
+        {
+            _piecePlacementService = new PiecePlacementService(this);
+            _movementService = new MovementService(this);
+            _castlingService = new CastlingService(this);
+            _attackDetectionService = new AttackDetectionService(this);
+            _gameStateService = new GameStateService(this, _attackDetectionService);
+            _boardValidationService = new BoardValidationService(this);
+        }
+
         public void Initialize()
         {
-            ClearBoard();
-            SetStartingPieces();
+            _piecePlacementService.ClearBoard();
+            _piecePlacementService.SetStartingPieces();
         }
 
-        private void SetStartingPieces()
-        {
-            var startingPieces = new (Type pieceType, int x, int y)[]
-            {
-                (typeof(Rook), 0, 0), (typeof(Knight), 1, 0), (typeof(Bishop), 2, 0),
-                (typeof(Queen), 3, 0), (typeof(King), 4, 0),
-                (typeof(Bishop), 5, 0), (typeof(Knight), 6, 0), (typeof(Rook), 7, 0)
-            };
+        public Piece? GetPieceAt(Position position) => Squares[position.Row, position.Column];
 
-            foreach (var (type, x, y) in startingPieces)
-                PlacePiece((Piece)Activator.CreateInstance(type, PieceColor.Black, new Position(x, y))!, new Position(x, y));
-
-            foreach (var (type, x, y) in startingPieces)
-                PlacePiece((Piece)Activator.CreateInstance(type, PieceColor.White, new Position(x, 7))!, new Position(x, 7));
-
-            for (int x = 0; x < BoardSize; x++)
-            {
-                PlacePiece(new Pawn(PieceColor.Black, new Position(x, 1)), new Position(x, 1));
-                PlacePiece(new Pawn(PieceColor.White, new Position(x, 6)), new Position(x, 6));
-            }
-        }
-
-        public void ClearBoard() => Array.Clear(Squares, 0, Squares.Length);
-
-        public void PlacePiece(Piece? piece, Position position)
+        public void SetPieceAt(Position position, Piece? piece)
         {
             Squares[position.Row, position.Column] = piece;
             piece?.SetPosition(position);
         }
 
-        public Piece? GetPieceAt(Position position) => Squares[position.Row, position.Column];
+        public void PlacePiece(Piece? piece, Position position)
+        {
+            _piecePlacementService.PlacePiece(piece, position);
+        }
 
         public void MovePiece(Position from, Position to)
         {
             var piece = GetPieceAt(from);
             if (piece == null) return;
 
-            if (piece is King king && IsCastling(from, to))
+            if (piece is King king && _castlingService.IsCastling(from, to))
             {
-                HandleCastling(king, from, to);
+                _castlingService.HandleCastling(king, from, to);
                 return;
             }
 
-            UpdatePiecePosition(piece, from, to);
+            _movementService.UpdatePiecePosition(piece, from, to);
         }
 
-        private bool IsCastling(Position from, Position to) =>
-            Math.Abs(from.Row - to.Row) == 2 && from.Column == to.Column;
+        public bool IsEmpty(Position pos) => _boardValidationService.IsEmpty(pos);
 
-        private void HandleCastling(King king, Position from, Position to)
-        {
-            var rookFrom = to.Row == 0 ? new Position(0, from.Column) : new Position(7, from.Column);
-            var rookTo = to.Row == 0 ? new Position(3, from.Column) : new Position(5, from.Column);
+        public bool IsEnemyPiece(Position pos, PieceColor color) => _boardValidationService.IsEnemyPiece(pos, color);
 
-            ExecuteCastling(king, from, to, rookFrom, rookTo);
-        }
-
-        private void ExecuteCastling(King king, Position from, Position to, Position rookFrom, Position rookTo)
-        {
-            // Move the king
-            Squares[to.Row, to.Column] = king;
-            Squares[from.Row, from.Column] = null;
-            king.SetPosition(to);
-            king.HasMoved = true;
-
-            // Move the rook
-            var rook = GetPieceAt(rookFrom);
-            if (rook != null)
-            {
-                Squares[rookTo.Row, rookTo.Column] = rook;
-                Squares[rookFrom.Row, rookFrom.Column] = null;
-                rook.SetPosition(rookTo);
-                rook.HasMoved = true;
-            }
-        }
-
-        private void UpdatePiecePosition(Piece piece, Position from, Position to)
-        {
-            Squares[to.Row, to.Column] = piece;
-            Squares[from.Row, from.Column] = null;
-            piece.SetPosition(to);
-            piece.HasMoved = true;
-        }
-
-        public bool IsEmpty(Position pos) => GetPieceAt(pos) == null;
-
-        public bool IsEnemyPiece(Position pos, PieceColor color) =>
-            GetPieceAt(pos) is Piece piece && piece.Color != color;
-
-        public bool IsInsideBoard(Position pos) =>
-            pos.Row >= 0 && pos.Row < BoardSize && pos.Column >= 0 && pos.Column < BoardSize;
+        public bool IsInsideBoard(Position pos) => _boardValidationService.IsInsideBoard(pos);
 
         public List<Position> GetMovesInDirections(Position start, PieceColor color, (int dx, int dy)[] directions)
         {
@@ -161,75 +120,34 @@ namespace ChessGameApplication.Game
             throw new Exception("Король не знайдений");
         }
 
-        public bool IsSquareUnderAttack(Position position, PieceColor defenderColor)
-        {
-            foreach (var piece in GetAllPieces())
-            {
-                if (piece.Color != defenderColor && piece.GetAvailableMoves(this).Contains(position))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        public bool IsSquareUnderAttack(Position position, PieceColor defenderColor) =>
+            _attackDetectionService.IsSquareUnderAttack(position, defenderColor);
 
         public bool IsInCheck(PieceColor kingColor) =>
-            IsSquareUnderAttack(FindKingPosition(kingColor), kingColor);
+            _attackDetectionService.IsInCheck(kingColor);
 
         public bool WouldBeInCheckAfterMove(Position from, Position to, PieceColor movingColor)
         {
             var originalPiece = GetPieceAt(to);
-            MovePieceBeInCheck(from, to);
+            _movementService.MovePieceTemporarily(from, to);
 
             bool isInCheck = IsInCheck(movingColor);
 
-            MovePieceBeInCheck(to, from);
+            _movementService.MovePieceTemporarily(to, from);
             PlacePiece(originalPiece, to);
 
             return isInCheck;
         }
 
-        public void MovePieceBeInCheck(Position from, Position to)
+        public bool IsCheckmate(PieceColor kingColor) => _gameStateService.IsCheckmate(kingColor);
+
+        public bool IsStalemate(PieceColor currentPlayer) => _gameStateService.IsStalemate(currentPlayer);
+        
+        public void ClearBoard()
         {
-            var piece = GetPieceAt(from);
-            if (piece == null) return;
-
-            Squares[to.Row, to.Column] = piece;
-            Squares[from.Row, from.Column] = null;
-            piece.SetPosition(to);
+            _piecePlacementService.ClearBoard();
         }
-
-        private Dictionary<Position, List<Position>> GetAllPossibleMoves(PieceColor color)
-        {
-            var allMoves = new Dictionary<Position, List<Position>>();
-
-            for (int row = 0; row < BoardSize; row++)
-            {
-                for (int col = 0; col < BoardSize; col++)
-                {
-                    var piece = Squares[row, col];
-                    if (piece?.Color == color)
-                    {
-                        var position = new Position(row, col);
-                        var validMoves = piece.GetAvailableMoves(this)
-                                              .Where(move => !WouldBeInCheckAfterMove(position, move, color))
-                                              .ToList();
-
-                        if (validMoves.Any())
-                        {
-                            allMoves[position] = validMoves;
-                        }
-                    }
-                }
-            }
-
-            return allMoves;
-        }
-
-        public bool IsCheckmate(PieceColor kingColor) =>
-            IsInCheck(kingColor) && !GetAllPossibleMoves(kingColor).Any();
-
-        public bool IsStalemate(PieceColor currentPlayer) =>
-            !IsInCheck(currentPlayer) && !GetAllPossibleMoves(currentPlayer).Any();
     }
+    
 }
+
